@@ -1,0 +1,12 @@
+# last mod 20100803 (tn)
+
+# xcode noise
+build/*
+TK-Session.xcodeproj/*
+# but include the project file
+!TK-Session.xcodeproj/project.pbxproj
+
+# osx noise
+.DS_Store
+profile
+
