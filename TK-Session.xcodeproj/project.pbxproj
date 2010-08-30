@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		40A9F36F122B3E310055EC84 /* TKSession_AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40A9F36E122B3E310055EC84 /* TKSession_AppDelegate.m */; };
 		40D6BE61122AAB2800E2ED9C /* TKUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40D6BE60122AAB2800E2ED9C /* TKUtility.framework */; };
 		40D6BE6D122AABB200E2ED9C /* TKUtility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40D6BE60122AAB2800E2ED9C /* TKUtility.framework */; };
 		40D6BE74122ABCF200E2ED9C /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 40D6BE73122ABCF200E2ED9C /* TKSession.m */; };
@@ -38,6 +39,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TK-Session_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TK-Session_Prefix.pch"; sourceTree = "<group>"; };
+		40A9F36D122B3E310055EC84 /* TKSession_AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSession_AppDelegate.h; sourceTree = "<group>"; };
+		40A9F36E122B3E310055EC84 /* TKSession_AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSession_AppDelegate.m; sourceTree = "<group>"; };
 		40D6BE60122AAB2800E2ED9C /* TKUtility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TKUtility.framework; path = /Volumes/DATA/Dropbox/org/proj/kellylab/src/TKUtility/build/Release/TKUtility.framework; sourceTree = "<absolute>"; };
 		40D6BE72122ABCF200E2ED9C /* TKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSession.h; sourceTree = "<group>"; };
 		40D6BE73122ABCF200E2ED9C /* TKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSession.m; sourceTree = "<group>"; };
@@ -61,6 +64,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				40A9F36D122B3E310055EC84 /* TKSession_AppDelegate.h */,
+				40A9F36E122B3E310055EC84 /* TKSession_AppDelegate.m */,
 				40D6BE72122ABCF200E2ED9C /* TKSession.h */,
 				40D6BE73122ABCF200E2ED9C /* TKSession.m */,
 			);
@@ -192,6 +197,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				40D6BE74122ABCF200E2ED9C /* TKSession.m in Sources */,
+				40A9F36F122B3E310055EC84 /* TKSession_AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

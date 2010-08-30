@@ -17,31 +17,13 @@ class TKSubject;
     /** Logical Elements */
     NSMutableDictionary                     *manifest;
     NSMutableArray                          *components;
-    NSArray                                 *availableComponents;
     TKSubject                               *subject;
-
-    /** Interface Elements */
-    IBOutlet NSWindow                       *adminWindow;
-    IBOutlet NSView                         *availableComponentView;
-    IBOutlet NSView                         *componentView;
-    IBOutlet NSView                         *errorLog;
-    IBOutlet NSView                         *sessionView;
-    IBOutlet NSView                         *subjectView;
-    IBOutlet NSWindow                       *sessionWindow;
 
 }
 
 @property(readonly) NSMutableDictionary     *manifest;
 @property(readonly) NSMutableArray          *components;
-@property(readonly) NSArray                 *availableComponents;
 @property(readonly) TKSubject               *subject;
-@property(assign)   IBOutlet NSWindow       *adminWindow;
-@property(assign)   IBOutlet NSView         *availableComponentView;
-@property(assign)   IBOutlet NSView         *componentView;
-@property(assign)   IBOutlet NSView         *errorLog;
-@property(assign)   IBOutlet NSView         *sessionView;
-@property(assign)   IBOutlet NSView         *subjectView;
-@property(assign)   IBOutlet NSWindow       *sessionWindow;
 
 - (IBAction)edit: (id)sender;
 - (IBAction)insertComponent: (id)sender;
