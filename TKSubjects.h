@@ -11,24 +11,28 @@
 #import <Cocoa/Cocoa.h>
 
 @interface TKSubjects : NSObject {
+
 	NSMutableArray *subjects;
+
 }
+
 @property (retain) NSMutableArray *subjects;
--(void) add;
--(void) clear;
--(void) clearDataForKey:(NSString *) key;
--(NSInteger) count;
--(NSMutableDictionary *) objectAtIndex:(NSInteger) index;
--(void) readSubjectsFromFile: (NSString *)pathToSubjectsFile;
--(void) removeSubjects:(NSIndexSet *) index;
--(void) sortUsingDescriptors:(NSArray *) newDescriptors;
--(void) writeSubjectsToFile: (NSString *)pathToSubjectsFile;
+
+- (void)add;
+- (void)clear;
+- (void)clearDataForKey: (NSString *)key;
+- (NSInteger)count;
+- (NSMutableDictionary *)objectAtIndex: (NSInteger)index;
+- (void)readSubjectsFromFile: (NSString *)pathToSubjectsFile;
+- (void)removeSubjects: (NSIndexSet *)index;
+- (void)sortUsingDescriptors: (NSArray *)newDescriptors;
+- (void)writeSubjectsToFile: (NSString *)pathToSubjectsFile;
 
 #pragma mark Table View Data Source Protocol
--(NSInteger) numberOfRowsInTableView:(NSTableView *) table;
--(void) tableView:(NSTableView *) table sortDescriptorsDidChange:(NSArray *) oldDescriptors;
--(void) tableView:(NSTableView *) table setObjectValue:(id) newObject forTableColumn:(NSTableColumn *) column row:(NSInteger) row;
--(id) tableView:(NSTableView *) table objectValueForTableColumn:(NSTableColumn *) column row:(NSInteger) row;
+- (NSInteger)numberOfRowsInTableView: (NSTableView *)table;
+- (void)tableView: (NSTableView *)table sortDescriptorsDidChange: (NSArray *)oldDescriptors;
+- (void)tableView: (NSTableView *)table setObjectValue: (id)newObject forTableColumn: (NSTableColumn *)column row: (NSInteger)row;
+- (id)tableView: (NSTableView *)table objectValueForTableColumn: (NSTableColumn *)column row: (NSInteger)row;
 
 @end
 
