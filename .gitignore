@@ -8,5 +8,6 @@ TK-Session.xcodeproj/*
 
 # osx noise
 .DS_Store
+._*
 profile
 

@@ -1,10 +1,12 @@
-//
+////////////////////////////////////////////////////////////
 //  main.m
 //  TK-Session
-//
-//  Created by Travis Nesland on 8/23/10.
-//  Copyright __MyCompanyName__ 2010. All rights reserved.
-//
+//  --------------------------------------------------------
+//  Author: Travis Nesland <tnesland@gmail.com>
+//  Created: 8/29/10
+//  Copyright Residential Research Facility, University of
+//  Kentucky, 2010. All rights reserved.
+/////////////////////////////////////////////////////////////
 
 #import <Cocoa/Cocoa.h>
 
