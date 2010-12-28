@@ -44,6 +44,37 @@
   // ...as of now there is nothing to do here...
 }
 
+- (BOOL)launchComponentWithID: (NSInteger)componentID {
+  // if componentID is equal to zero, we are signifying the end condition
+  if(componentID == 0) {
+    // TODO: we need to end the session here
+    return YES;
+  } 
+  // attempt to get the corresponding definition
+  NSDictionary *componentDefinition =
+    [components objectForKey: [NSString stringWithFormat:@"%d",componentID]];
+  // if we found a definition for the given component ID...
+  if(componentDefinition) {
+    // attempt to load the component and begin
+    TKComponentController *newComponent =
+      [TKComponentController loadFromDefinition:componentDefinition];
+    // if the new component is cleared to begin...
+    if([newComponent isClearedToBegin]) {
+      // begin and return
+      DLog(@"Attempting to start new component: %@",
+           [[NSDate date] description]);
+      [newComponent begin];
+      return YES;
+    } else { // there was an error while attempting to start component
+      ELog(@"Encountered error while attempting to start new component");
+      return NO;
+    }
+  } else { // we could not find a valid component definition
+    ELog(@"Could not get definition for component with ID: %d",componentID);
+    return NO;
+  }
+}
+
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile {
   if(manifest=[NSDictionary dictionaryWithContentsOfFile:pathToFile]) {
     [manifest retain];
@@ -74,9 +105,16 @@
                  selector:@selector(componentDidEnd:)
                      name:TKComponentDidFinishNotification
                    object:nil];
-  // TODO: load the next component using ID == 0
-  // we will first need to write the method to do this!!!
-  return NO;
+  // load the next component using ID == 1
+  // this ID is designated for the first component
+  if([self launchComponentWithID:1]) {
+    DLog(@"Session has started run at: %@",[[NSDate date] description]);
+    return YES;
+  } else {
+    // there was a problem starting the session run
+    ELog(@"Session could not be started");
+    return NO;
+  }
 }
 
 #pragma mark Preference Keys
@@ -87,6 +125,7 @@ NSString * const RRFSessionModifiedDateKey = @"modifiedDate";
 NSString * const RRFSessionStatusKey = @"status";
 NSString * const RRFSessionLastRunDateKey = @"lastRunDate";
 NSString * const RRFSessionComponentsKey = @"components";
+NSString * const RRFSessionComponentsDefinitionKey = @"definition";
 NSString * const RRFSessionComponentsJumpsKey = @"jumps";
 
 @end
