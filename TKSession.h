@@ -14,6 +14,18 @@
 @interface TKSession : NSObject {
   NSDictionary *manifest;               // the manifest, or definition for
                                         // the currently loaded session
+  NSMutableDictionary *registry;        // information pertaining to the current
+                                        // session... this includes information
+                                        // parsed into runs for each component
+                                        // as well as a history representing
+                                        // completed components... it is through
+                                        // the registry that components can
+                                        // access session information or 
+                                        // information pertaining to other
+                                        // components or specific runs of said
+                                        // component... the registry will be
+                                        // regularly written to disk so that
+                                        // we may recover from crash a crash
   NSDictionary *components;             // the block of components currently
                                         // loaded
   NSInteger currentComponentID;         // the ID of the current component (in
@@ -42,6 +54,14 @@
 - (BOOL)passedPreflightCheck: (NSString **)errorString;
 - (BOOL)run;
 
+#pragma mark Registry Accessors
+- (NSDictionary *)registryForTask: (NSInteger)taskID;
+- (NSDictionary *)registryForLastTask;
+- (NSDictionary *)registryForTaskWithOffset: (NSInteger)offset;
+
+#pragma mark Registry Setters
+- (BOOL)setValue: (id)newValue forRegistryKey: (NSString *)key;
+
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey;
 NSString * const RRFSessionDescriptionKey;
@@ -52,5 +72,7 @@ NSString * const RRFSessionLastRunDateKey;
 NSString * const RRFSessionComponentsKey;
 NSString * const RRFSessionComponentsDefinitionKey;
 NSString * const RRFSessionComponentsJumpsKey;
+NSString * const RRFSessionHistoryKey;
+NSString * const RRFSessionRunKey;
 
 @end 
