@@ -32,13 +32,13 @@
 - (BOOL)run;
 
 #pragma mark Preference Keys
-extern NSString * const RRFSessionProtocolKey;
-extern NSString * const RRFSessionDescriptionKey;
-extern NSString * const RRFSessionCreationDateKey;
-extern NSString * const RRFSessionModifiedDateKey;
-extern NSString * const RRFSessionStatusKey;
-extern NSString * const RRFSessionLastRunDateKey;
-extern NSString * const RRFSessionComponentsKey;
-extern NSString * const RRFSessionComponentsJumpsKey;
+NSString * const RRFSessionProtocolKey;
+NSString * const RRFSessionDescriptionKey;
+NSString * const RRFSessionCreationDateKey;
+NSString * const RRFSessionModifiedDateKey;
+NSString * const RRFSessionStatusKey;
+NSString * const RRFSessionLastRunDateKey;
+NSString * const RRFSessionComponentsKey;
+NSString * const RRFSessionComponentsJumpsKey;
 
 @end 
