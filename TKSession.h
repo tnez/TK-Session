@@ -13,27 +13,31 @@
 class TKSubject;
 
 @interface TKSession : NSObject {
-
-    /** Logical Elements */
-    NSMutableDictionary                     *manifest;
-    NSMutableArray                          *components;
-    TKSubject                               *subject;
-
+  NSDictionary *manifest;               // the manifest, or definition for
+                                        // the currently loaded session
+  NSDictionary *components;             // the block of components currently
+                                        // loaded
+  TKSubject *subject;                   // the subject object created during
+                                        // setup
 }
 
-@property(readonly) NSMutableDictionary     *manifest;
-@property(readonly) NSMutableArray          *components;
-@property(readonly) TKSubject               *subject;
+@property(readonly) NSMutableDictionary *manifest;
+@property(readonly) NSMutableArray *components;
+@property(nonatomic, retain) TKSubject *subject;
 
-- (IBAction)edit: (id)sender;
-- (IBAction)insertComponent: (id)sender;
-- (void)load;
-- (IBAction)new: (id)sender;
-- (IBAction)preflight: (id)sender;
-- (IBAction)removeComponent: (id)sender;
-- (IBAction)run: (id)sender;
-- (IBAction)save: (id)sender;
+#pragma mark Session Run Functions
+- (BOOL)loadSessionFromFilePath: (NSString *)pathToFile;
+- (BOOL)passedPreflightCheck: (NSString **)errorString;
+- (BOOL)run;
 
-@end
+#pragma mark Preference Keys
+extern NSString * const RRFSessionProtocolKey;
+extern NSString * const RRFSessionDescriptionKey;
+extern NSString * const RRFSessionCreationDateKey;
+extern NSString * const RRFSessionModifiedDateKey;
+extern NSString * const RRFSessionStatusKey;
+extern NSString * const RRFSessionLastRunDateKey;
+extern NSString * const RRFSessionComponentsKey;
+extern NSString * const RRFSessionComponentsJumpsKey;
 
-extern NSString                             * const TKSessionNameKey;
+@end 

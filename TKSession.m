@@ -11,43 +11,38 @@
 #import "TKSession.h"
 
 @implementation TKSession
-@synthesize manifest,components,availableComponents,subject,adminWindow,
-availableComponentView,componentView,errorLog,sessionView,subjectView,sessionWindow;
+@synthesize manifest, components, subject;
 
+#pragma mark Housekeeping
 - (void)dealloc {
-    // nothing for now
-    [super dealloc];
+  [manifest release];
+  [components release];
+  [subject release];
+  // nothing for now
+  [super dealloc];
 }
 
-- (IBAction)edit: (id)sender {
-    // TODO:
+#pragma mark Run Functions
+- (BOOL)loadSessionFromFilePath: (NSString *)pathToFile {
+    // TODO: implement
 }
 
-- (IBAction)insertComponent: (id)sender {
-    // TODO:
+- (BOOL)passedPreflightCheck: (NSString **)errorString {
+    // TODO: implement
 }
 
-- (void)load {
-    // TODO:
+- (BOOL)run {
+    // TODO: implement
 }
 
-- (IBAction)new: (id)sender {
-    // TODO:
-}
-
-- (IBAction)preflight: (id)sender {
-    // TODO:
-}
-
-- (IBAction)run: (id)sender {
-    // TODO:
-}
-
-- (IBAction)save: (id)sender {
-    // TODO:
-}
+#pragma mark Preference Keys
+NSString * const RRFSessionProtocolKey = @"protocol";
+NSString * const RRFSessionDescriptionKey  = @"description";
+NSString * const RRFSessionCreationDateKey = @"creationDate";
+NSString * const RRFSessionModifiedDateKey = @"modifiedDate";
+NSString * const RRFSessionStatusKey = @"status";
+NSString * const RRFSessionLastRunDateKey = @"lastRunDate";
+NSString * const RRFSessionComponentsKey = @"components";
+NSString * const RRFSessionComponentsJumpsKey = @"jumps";
 
 @end
-
-/** Preference Keys */
-NSString * const TkSessionNameKey = @"TKSessionName";
