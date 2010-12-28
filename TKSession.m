@@ -24,15 +24,18 @@
 
 #pragma mark Run Functions
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile {
-    // TODO: implement
+  // TODO: implement
+  return NO;
 }
 
 - (BOOL)passedPreflightCheck: (NSString **)errorString {
-    // TODO: implement
+  // TODO: implement
+  return NO;
 }
 
 - (BOOL)run {
-    // TODO: implement
+  // TODO: implement
+  return NO;
 }
 
 #pragma mark Preference Keys

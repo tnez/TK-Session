@@ -9,12 +9,27 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		40352B6912CA3C0D0071EECA /* SampleSessionManifest.plist in Resources */ = {isa = PBXBuildFile; fileRef = 40352B6812CA3C0D0071EECA /* SampleSessionManifest.plist */; };
+		40352B8A12CA40050071EECA /* TKUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40352B8912CA40050071EECA /* TKUtility.framework */; };
+		40352BA412CA40760071EECA /* TKUtility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40352B8912CA40050071EECA /* TKUtility.framework */; };
 		404DF3A91279EC34000D1CC4 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 404DF3A41279EC34000D1CC4 /* TKSession.m */; };
 		404DF3AD1279EC45000D1CC4 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404DF3AC1279EC45000D1CC4 /* version.plist */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		40352BA112CA404B0071EECA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				40352BA412CA40760071EECA /* TKUtility.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -26,6 +41,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TK-Session_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TK-Session_Prefix.pch"; sourceTree = "<group>"; };
 		40352B6812CA3C0D0071EECA /* SampleSessionManifest.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SampleSessionManifest.plist; sourceTree = "<group>"; };
+		40352B8912CA40050071EECA /* TKUtility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TKUtility.framework; sourceTree = "<group>"; };
 		404DF3A31279EC34000D1CC4 /* TKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSession.h; sourceTree = "<group>"; };
 		404DF3A41279EC34000D1CC4 /* TKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSession.m; sourceTree = "<group>"; };
 		404DF3AC1279EC45000D1CC4 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
@@ -39,6 +55,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				40352B8A12CA40050071EECA /* TKUtility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +82,7 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				40352B8912CA40050071EECA /* TKUtility.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
@@ -132,6 +150,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				40352BA112CA404B0071EECA /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -211,6 +230,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -228,6 +251,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TK-Session_Prefix.pch";

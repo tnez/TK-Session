@@ -10,7 +10,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import <TKUtility/TKUtility.h>
-class TKSubject;
 
 @interface TKSession : NSObject {
   NSDictionary *manifest;               // the manifest, or definition for
@@ -21,8 +20,8 @@ class TKSubject;
                                         // setup
 }
 
-@property(readonly) NSMutableDictionary *manifest;
-@property(readonly) NSMutableArray *components;
+@property(readonly) NSDictionary *manifest;
+@property(readonly) NSDictionary *components;
 @property(nonatomic, retain) TKSubject *subject;
 
 #pragma mark Session Run Functions
