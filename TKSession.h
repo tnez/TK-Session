@@ -24,7 +24,9 @@
 @property(readonly) NSDictionary *components;
 @property(nonatomic, retain) TKSubject *subject;
 
-#pragma mark Session Run Functions
+- (void)componentDidBegin: (NSNotification *)info;
+- (void)componentDidFinish: (NSNotification *)info;
+- (void)componentWillBegin: (NSNotification *)info;
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile;
 - (BOOL)passedPreflightCheck: (NSString **)errorString;
 - (BOOL)run;

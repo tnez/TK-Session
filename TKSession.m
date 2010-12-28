@@ -34,7 +34,22 @@
 }
 
 - (BOOL)run {
-  // TODO: implement
+  // register for notifications from components
+  NSNotificationCenter *postOffice = [NSNotificationCenter defaultCenter];
+  [postOffice addObserver:self
+                 selector:@selector(componentWillBegin:)
+                     name:TKComponentWillBeginNotification
+                   object:nil];
+  [postOffice addObserver:self
+                 selector:@selector(componentDidBegin:)
+                     name:TKComponentDidBeginNotification
+                 object:nil];  
+  [postOffice addObserver:self
+                 selector:@selector(componentDidEnd:)
+                     name:TKComponentDidFinishNotification
+                   object:nil];
+  // TODO: load the next component using ID == 0
+  // we will first need to write the method to do this!!!
   return NO;
 }
 
