@@ -14,7 +14,15 @@
 @synthesize manifest, components, subject;
 
 #pragma mark Housekeeping
+- (void)awakeFromNib {
+  // nothing for now
+  // ...
+}
+
 - (void)dealloc {
+  // de-register for notifications
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  // release reserved memory
   [manifest release];
   [components release];
   [subject release];
@@ -22,10 +30,28 @@
   [super dealloc];
 }
 
-#pragma mark Run Functions
+
+- (void)componentDidBegin: (NSNotification *)info {
+  // TODO: add entry to component history
+  // TODO: update start in registry file
+}
+
+- (void)componentDidFinish: (NSNotification *)info {
+  // TODO: update end in registry file
+}
+
+- (void)componentWillBegin: (NSNotification *)info {
+  // ...as of now there is nothing to do here...
+}
+
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile {
-  // TODO: implement
-  return NO;
+  if(manifest=[NSDictionary dictionaryWithContentsOfFile:pathToFile]) {
+    [manifest retain];
+    return YES;
+  } else {
+    ELog(@"Could not load from path: %@",pathToFile);
+    return NO;
+  }
 }
 
 - (BOOL)passedPreflightCheck: (NSString **)errorString {
