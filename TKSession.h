@@ -55,12 +55,35 @@
 - (BOOL)run;
 
 #pragma mark Registry Accessors
-- (NSDictionary *)registryForTask: (NSInteger)taskID;
+/**
+ Return copy of entire dictionary belonging to the task w/ the given ID
+ Should return nil if ID is invalid
+ */
+- (NSDictionary *)registryForTask: (NSString *)taskID;
+/**
+ Return copy of entire dictionary belonging to the last completed task
+ Should return nil if last task cannot be found
+ */
 - (NSDictionary *)registryForLastTask;
+/**
+ Return copy of entire dictionary belonging to the task referenced by the
+ given offset. Should return nil if offset is invalid.
+ Positive offsets are interpreted as from the first run task forward.
+ Zero offset is the current task.
+ Negative offsets are interpreted as the last run task backward.
+*/
 - (NSDictionary *)registryForTaskWithOffset: (NSInteger)offset;
 
 #pragma mark Registry Setters
-- (BOOL)setValue: (id)newValue forRegistryKey: (NSString *)key;
+/** 
+ Sets a value for key pertaining to the whole current task (not to an 
+ individual run of said task).
+ */
+- (void)setValue: (id)newValue forRegistryKey: (NSString *)key;
+/**
+ Sets a value for key pertaining to the current run of the current task
+ */
+- (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key;
 
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey;

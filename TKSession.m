@@ -103,7 +103,7 @@
                      name:TKComponentDidBeginNotification
                  object:nil];  
   [postOffice addObserver:self
-                 selector:@selector(componentDidEnd:)
+                 selector:@selector(componentDidFinish:)
                      name:TKComponentDidFinishNotification
                    object:nil];
   // load the next component using ID == 1
@@ -119,12 +119,19 @@
 }
 
 #pragma mark Registry Accessors
-- (NSDictionary *)registryForTask: (NSInteger)taskID {
-  NSString *targetID = [NSString stringWithFormat:@"%d",taskID];
-  // return the entire registry section for task w/ ID == targetID
-  return [[NSDictionary dictionaryWithDictionary:
-          [[registry valueForKey:RRFSessionComponentsKey]
-           valueForKey:targetID]] autorelease];
+- (NSDictionary *)registryForTask: (NSString *)taskID {
+  NSDictionary * retValue = nil;
+  @try {
+    retValue = [NSDictionary dictionaryWithDictionary:
+                [[registry valueForKey:RRFSessionComponentsKey]
+                 valueForKey:taskID]];
+  }
+  @catch (NSException * e) {
+    ELog(@"Could not find task with ID: %@",taskID);
+  }
+  @finally {
+    return [retValue autorelease];
+  }
 }
 
 - (NSDictionary *)registryForLastTask {
@@ -135,38 +142,73 @@
 }
 
 - (NSDictionary *)registryForTaskWithOffset: (NSInteger)offset {
-  // determine ID of the task using offset
-  NSInteger targetIdx;
-  NSArray *history = [NSArray arrayWithArray:
-                      [registry valueForKey:RRFSessionHistoryKey]];
-  // if offset is positive... implication is that we are offsetting
-  // from the begginging...
-  if(offset>0) {
-    // ...this will be index in the array minus 1
-    targetIdx = offset - 1;
-  } else {
-    // we were given a non-positive offset which implies
-    // that we should offset from our current point
-    // this is equivalent to the index of the last item in history
-    // minus our offset (which may be zero representing the current task)
-    targetIdx = [history count] - 1 + offset;
+  NSDictionary *retValue = nil;
+  @try {
+    // determine ID of the task using offset
+    NSInteger targetIdx;
+    NSArray *history = [NSArray arrayWithArray:
+                        [registry valueForKey:RRFSessionHistoryKey]];
+    // if offset is positive... implication is that we are offsetting
+    // from the begginging...
+    if(offset>0) {
+      // ...this will be index in the array minus 1
+      targetIdx = offset - 1;
+    } else {
+      // we were given a non-positive offset which implies
+      // that we should offset from our current point
+      // this is equivalent to the index of the last item in history
+      // minus our offset (which may be zero representing the current task)
+      targetIdx = [history count] - 1 + offset;
+    }
+    // we then need the registry for the task with id equal to the
+    // value we find in our target index
+    NSString *targetID = [history objectAtIndex:targetIdx];
+    retValue = [self registryForTask:targetID];
   }
-  // we then need the registry for the task with id equal to the
-  // value we find in our target index
-  NSNumber *targetID = [history objectAtIndex:targetIdx];
-  return [self registryForTask:[targetID integerValue]];
+  @catch (NSException * e) {
+    ELog(@"Could not find task with offset: %d",offset);
+  }
+  @finally {
+    return [retValue autorelease];
+  }
 }
 
 #pragma mark Registry Setters
-- (BOOL)setValue: (id)newValue forRegistryKey: (NSString *)key {
-  // get dictionary for current run of current task
-  NSMutableDictionary *currentRun = 
-  [[[self registryForTaskWithOffset:0]
-    valueForKey:RRFSessionRunKey] lastObject];
-  // set value for said dictionary
-  [currentRun setValue:newValue forKey:key];
-  //
-  return YES;
+- (void)setValue: (id)newValue forRegistryKey: (NSString *)key {
+  @try {
+    // get reference to current task...
+    // first get current task ID
+    NSString *curTaskID = [[registry valueForKey:RRFSessionHistoryKey]
+                           lastObject];
+    // then get the reference to the current task
+    NSMutableDictionary *currentTask = 
+    [[registry valueForKey:RRFSessionComponentsKey] valueForKey:curTaskID];
+    // set value for said dictionary
+    [currentTask setValue:newValue forKey:key];
+  }
+  @catch (NSException * e) {
+    ELog(@"Could not set value for registry key: %@",key);
+  }
+}
+
+- (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key {
+  @try {
+  // get reference to current task...
+    // first get current task ID
+    NSString *curTaskID = [[registry valueForKey:RRFSessionHistoryKey]
+                           lastObject];
+    // then get the reference to the current task
+    NSMutableDictionary *currentTask = 
+    [[registry valueForKey:RRFSessionComponentsKey] valueForKey:curTaskID];
+    // get the reference to the current run of current task
+    NSMutableDictionary *currentRun =
+    [[currentTask valueForKey:RRFSessionRunKey] lastObject];
+    // set value for said dictionary
+    [currentRun setValue:newValue forKey:key];
+  }
+  @catch (NSException * e) {
+    ELog(@"Could not set value for run registry key: %@",key);
+  }
 }
 
 #pragma mark Preference Keys
