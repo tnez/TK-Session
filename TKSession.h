@@ -28,7 +28,7 @@
                                         // we may recover from crash a crash
   NSDictionary *components;             // the block of components currently
                                         // loaded
-  NSInteger currentComponentID;         // the ID of the current component (in
+  NSString *currentComponentID;         // the ID of the current component (in
                                         // this case current ranges from about
                                         // to be launched to componentDidFinish)  
   TKSubject *subject;                   // the subject object created during
