@@ -31,14 +31,22 @@
   [super dealloc];
 }
 
-
 - (void)componentDidBegin: (NSNotification *)info {
-  // TODO: add entry to component history
-  // TODO: update start in registry file
+  //add entry to component history
+  [[registry valueForKey:RRFSessionHistoryKey] addObject:currentComponentID];
+  // create a new run entry for current task
+  [[[self registryForTaskWithOffset:0]
+    valueForKey:RRFSessionRunKey]
+   addObject:[NSMutableDictionary dictionaryWithCapacity:2]];
+  // update start in registry file
+  [self setValue:[NSDate date] forRunRegistryKey:@"start"];
+  // TODO: notify that registry has changed
 }
 
 - (void)componentDidFinish: (NSNotification *)info {
-  // TODO: update end in registry file
+  // update end in registry file
+  [self setValue:[NSDate date] forRunRegistryKey:@"end"];
+  // TODO: notify that registry has changed
 }
 
 - (void)componentWillBegin: (NSNotification *)info {
