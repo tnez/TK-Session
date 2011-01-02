@@ -12,8 +12,14 @@
 #import <TKUtility/TKUtility.h>
 
 @interface TKSession : NSObject {
+  NSDictionary *components;             // the block of components currently
+                                        // loaded  
+  NSString *currentComponentID;         // the ID of the current component (in
+                                        // this case current ranges from about
+                                        // to be launched to componentDidFinish)    
   NSDictionary *manifest;               // the manifest, or definition for
                                         // the currently loaded session
+  NSString *pathToRegistryFile;         // path to registry file
   NSMutableDictionary *registry;        // information pertaining to the current
                                         // session... this includes information
                                         // parsed into runs for each component
@@ -26,22 +32,19 @@
                                         // component... the registry will be
                                         // regularly written to disk so that
                                         // we may recover from crash a crash
-  NSDictionary *components;             // the block of components currently
-                                        // loaded
-  NSString *currentComponentID;         // the ID of the current component (in
-                                        // this case current ranges from about
-                                        // to be launched to componentDidFinish)  
   TKSubject *subject;                   // the subject object created during
                                         // setup
 }
 
-@property(readonly) NSDictionary *manifest;
 @property(readonly) NSDictionary *components;
+@property(readonly) NSDictionary *manifest;
+@property(readonly) NSString *pathToRegistryFile;
 @property(nonatomic, retain) TKSubject *subject;
 
 - (void)componentDidBegin: (NSNotification *)info;
 - (void)componentDidFinish: (NSNotification *)info;
 - (void)componentWillBegin: (NSNotification *)info;
+- (id)initWithFile: (NSString *)filename;
 /**
  launchComponentWithID:
  Discussion - Attempts to launch the component whose ID value corresponds to the value of 
@@ -85,6 +88,22 @@
  */
 - (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key;
 
+#pragma mark Registry Maintenance
+/**
+ Write the registry file to disk
+ Returns YES if successful
+ */
+- (BOOL)bounceRegistryToDisk;
+/**
+ Returns the path to where the registry file will be stored
+ */
+- (NSString *)pathToRegistryFile;
+/**
+ This method should be called whenever we have made a change to the registry
+ in memory
+ */
+- (void)registryDidChange;
+
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey;
 NSString * const RRFSessionDescriptionKey;
@@ -97,5 +116,8 @@ NSString * const RRFSessionComponentsDefinitionKey;
 NSString * const RRFSessionComponentsJumpsKey;
 NSString * const RRFSessionHistoryKey;
 NSString * const RRFSessionRunKey;
+
+#pragma mark Environmental Constants
+NSString * const RRFSessionPathToRegistryFileKey;
 
 @end 

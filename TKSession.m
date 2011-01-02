@@ -11,7 +11,7 @@
 #import "TKSession.h"
 
 @implementation TKSession
-@synthesize manifest, components, subject;
+@synthesize components,manifest,pathToRegistryFile,subject;
 
 #pragma mark Housekeeping
 - (void)awakeFromNib {
@@ -26,9 +26,19 @@
   [manifest release];
   [registry release];
   [components release];
+  [pathToRegistryFile release];
   [subject release];
   // nothing for now
   [super dealloc];
+}
+
+- (id)init {
+  if([super init]) {
+    pathToRegistryFile = [[NSString alloc]
+                          initWithString:RRFSessionPathToRegistryFileKey];
+    return self;
+  }
+  return nil;
 }
 
 - (void)componentDidBegin: (NSNotification *)info {
@@ -51,6 +61,19 @@
 
 - (void)componentWillBegin: (NSNotification *)info {
   // ...as of now there is nothing to do here...
+}
+
+- (id)initWithFile: (NSString *)filename {
+  if([self init]) {
+    // read session file
+    manifest = [[NSDictionary alloc] initWithContentsOfFile:filename];
+    // if there was an error reading the file...
+    if(!manifest) {
+      ELog(@"Could not read session file: %@",filename);
+    }
+    return self;
+  }
+  return nil;
 }
 
 - (BOOL)launchComponentWithID: (NSInteger)componentID {
@@ -219,6 +242,33 @@
   }
 }
 
+#pragma mark Registry Maintenence
+/**
+ Write the registry file to disk
+ Returns YES if successful
+ */
+- (BOOL)bounceRegistryToDisk {
+  return [registry writeToFile:[self pathToRegistryFile] atomically:YES];
+}
+
+/**
+ Path to which the registry file should be stored
+ */
+- (NSString *)pathToRegistryFile {
+  return [pathToRegistryFile stringByStandardizingPath];
+}
+
+/**
+ This method should be called whenever we have made a change to the registry
+ in memory
+ */
+- (void)registryDidChange {
+  DLog(@"Writing registry to disk");
+  if(![self bounceRegistryToDisk]) {
+    ELog(@"Unable to write the registry to disk");
+  }
+}
+
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey = @"protocol";
 NSString * const RRFSessionDescriptionKey  = @"description";
@@ -232,5 +282,7 @@ NSString * const RRFSessionComponentsJumpsKey = @"jumps";
 NSString * const RRFSessionHistoryKey = @"history"; 
 NSString * const RRFSessionRunKey = @"runs";
 
+#pragma mark Environmental Constants
+NSString * const RRFSessionPathToRegistryFileKey = @"~/Desktop";
 
 @end

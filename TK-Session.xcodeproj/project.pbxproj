@@ -13,6 +13,7 @@
 		40352BA412CA40760071EECA /* TKUtility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40352B8912CA40050071EECA /* TKUtility.framework */; };
 		404DF3A91279EC34000D1CC4 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 404DF3A41279EC34000D1CC4 /* TKSession.m */; };
 		404DF3AD1279EC45000D1CC4 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404DF3AC1279EC45000D1CC4 /* version.plist */; };
+		4079CA8B12D0DD1F009B23AC /* TKSessionAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4079CA8A12D0DD1F009B23AC /* TKSessionAppDelegate.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -45,6 +46,8 @@
 		404DF3A31279EC34000D1CC4 /* TKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSession.h; sourceTree = "<group>"; };
 		404DF3A41279EC34000D1CC4 /* TKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSession.m; sourceTree = "<group>"; };
 		404DF3AC1279EC45000D1CC4 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
+		4079CA8912D0DD1F009B23AC /* TKSessionAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSessionAppDelegate.h; sourceTree = "<group>"; };
+		4079CA8A12D0DD1F009B23AC /* TKSessionAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSessionAppDelegate.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* TK-Session.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TK-Session.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -67,6 +70,8 @@
 			children = (
 				404DF3A31279EC34000D1CC4 /* TKSession.h */,
 				404DF3A41279EC34000D1CC4 /* TKSession.m */,
+				4079CA8912D0DD1F009B23AC /* TKSessionAppDelegate.h */,
+				4079CA8A12D0DD1F009B23AC /* TKSessionAppDelegate.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -200,6 +205,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				404DF3A91279EC34000D1CC4 /* TKSession.m in Sources */,
+				4079CA8B12D0DD1F009B23AC /* TKSessionAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
