@@ -11,7 +11,7 @@
 #import "TKSession.h"
 
 @implementation TKSession
-@synthesize components,manifest,pathToRegistryFile,subject;
+@synthesize components,manifest,pathToRegistryFile,compObj,subject;
 
 #pragma mark Housekeeping
 - (void)awakeFromNib {
@@ -27,6 +27,7 @@
   [registry release];
   [components release];
   [pathToRegistryFile release];
+  [compObj release];
   [subject release];
   // nothing for now
   [super dealloc];
@@ -58,11 +59,12 @@
 }
 
 - (void)componentDidFinish: (NSNotification *)info {
+  DLog(@"made it here");
   // update end in registry file
   [self setValue:[NSDate date] forRunRegistryKey:@"end"];
   // TODO: incorp offset in dictionary get the next value
   // get jump value
-  NSString *jumpToTask = [[[self registryForTaskWithOffset:0]
+  NSString *jumpToTask = [[[components valueForKey:currentComponentID]
                            valueForKey:RRFSessionComponentsJumpsKey]
                           objectAtIndex:0];
   DLog(@"Jump value for task: %@ is %@",currentComponentID,jumpToTask);
@@ -164,14 +166,14 @@
   // if we found a definition for the given component ID...
   if(componentDefinition) {
     // attempt to load the component and begin
-    TKComponentController *newComponent =
-      [TKComponentController loadFromDefinition:componentDefinition];
+    [self setCompObj:
+     [TKComponentController loadFromDefinition:componentDefinition]];
     // if the new component is cleared to begin...
-    if([newComponent isClearedToBegin]) {
+    if([compObj isClearedToBegin]) {
       // begin and return
       DLog(@"Attempting to start new component: %@",componentDefinition);
       // add entry to registry file history
-      [newComponent begin];
+      [compObj begin];
       return YES;
     } else { // there was an error while attempting to start component
       ELog(@"Encountered error while attempting to start new component");
@@ -235,9 +237,9 @@
 - (NSDictionary *)registryForTask: (NSString *)taskID {
   NSDictionary * retValue = nil;
   @try {
-    retValue = [NSDictionary dictionaryWithDictionary:
-                [[registry valueForKey:RRFSessionComponentsKey]
-                 valueForKey:taskID]];
+    retValue = [[NSDictionary dictionaryWithDictionary:
+                 [[registry valueForKey:RRFSessionComponentsKey]
+                  valueForKey:taskID]] retain];
   }
   @catch (NSException * e) {
     ELog(@"Could not find task with ID: %@",taskID);

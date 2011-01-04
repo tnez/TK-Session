@@ -32,6 +32,7 @@
                                         // component... the registry will be
                                         // regularly written to disk so that
                                         // we may recover from crash a crash
+  TKComponentController *compObj;       // the actual component object
   TKSubject *subject;                   // the subject object created during
                                         // setup
 }
@@ -39,6 +40,7 @@
 @property(readonly) NSDictionary *components;
 @property(readonly) NSDictionary *manifest;
 @property(readonly) NSString *pathToRegistryFile;
+@property(nonatomic, retain) TKComponentController *compObj;
 @property(nonatomic, retain) TKSubject *subject;
 
 - (void)componentDidBegin: (NSNotification *)info;
