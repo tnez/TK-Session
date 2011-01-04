@@ -113,6 +113,7 @@ NSString * const RRFSessionSessionKey;
 NSString * const RRFSessionMachineKey;
 NSString * const RRFSessionDescriptionKey;
 NSString * const RRFSessionStartKey;
+NSString * const RRFSessionStartTaskKey;
 NSString * const RRFSessionEndKey;
 NSString * const RRFSessionCreationDateKey;
 NSString * const RRFSessionModifiedDateKey;

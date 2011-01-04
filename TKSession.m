@@ -48,14 +48,7 @@
 }
 
 - (void)componentDidBegin: (NSNotification *)info {
-  //add entry to component history
-  [[registry valueForKey:RRFSessionHistoryKey] addObject:currentComponentID];
-  // create a new run entry for current task
-  [[[self registryForTask:currentComponentID]
-    valueForKey:RRFSessionRunKey]
-   addObject:[NSMutableDictionary dictionaryWithCapacity:2]];
-  // update start in registry file
-  [self setValue:[NSDate date] forRunRegistryKey:@"start"];
+  DLog(@"Component did begin");
 }
 
 - (void)componentDidFinish: (NSNotification *)info {
@@ -63,9 +56,8 @@
   // update end in registry file
   [self setValue:[NSDate date] forRunRegistryKey:@"end"];
   // TODO: incorp offset in dictionary get the next value
-  NSInteger offset = [[[components valueForKey:currentComponentID]
-                       objectForKey:RRFSessionComponentsOffsetKey]
-                      integerValue];
+  NSInteger offset = [[[self registryForTask:currentComponentID]
+                       valueForKey:RRFSessionComponentsOffsetKey] integerValue];
   // get jump value
   NSString *jumpToTask = [[[components valueForKey:currentComponentID]
                            valueForKey:RRFSessionComponentsJumpsKey]
@@ -161,8 +153,18 @@
   // if componentID is equal to zero, we are signifying the end condition
   if([componentID isEqualToString:@"end"]) {
     // TODO: we need to end the session here
+    DLog(@"Ending Session!");
+    [NSApp terminate];
     return YES;
   } 
+  //add entry to component history
+  [[registry valueForKey:RRFSessionHistoryKey] addObject:currentComponentID];
+  // create a new run entry for current task
+  [[[self registryForTask:currentComponentID]
+    valueForKey:RRFSessionRunKey]
+   addObject:[NSMutableDictionary dictionaryWithCapacity:2]];
+  // update start in registry file
+  [self setValue:[NSDate date] forRunRegistryKey:@"start"];
   // attempt to get the corresponding definition
   NSDictionary *componentDefinition =
     [[components objectForKey:componentID] objectForKey:@"definition"];
@@ -171,6 +173,8 @@
     // attempt to load the component and begin
     [self setCompObj:
      [TKComponentController loadFromDefinition:componentDefinition]];
+    // register ourself as the delegate for the new component
+    [compObj setDelegate:self];
     // if the new component is cleared to begin...
     if([compObj isClearedToBegin]) {
       // begin and return
@@ -226,7 +230,8 @@
   
   // load the next component using ID == 1
   // this ID is designated for the first component
-  if([self launchComponentWithID:@"1"]) {
+  if([self launchComponentWithID:
+      [manifest valueForKey:RRFSessionStartTaskKey]]) {
     DLog(@"Session has started run at: %@",[NSDate date]);
     return YES;
   } else {
@@ -294,10 +299,11 @@
 #pragma mark Registry Setters
 - (void)setValue: (id)newValue forRegistryKey: (NSString *)key {
   @try {
+    DLog(@"value: %@ forKey: %@",newValue,key);
     // get reference to current task...
     NSMutableDictionary *currentTask = 
-    [[registry valueForKey:RRFSessionComponentsKey]
-     valueForKey:currentComponentID];
+    [[registry objectForKey:RRFSessionComponentsKey]
+     objectForKey:currentComponentID];
     // set value for said dictionary
     [currentTask setValue:newValue forKey:key];
     // we did change
@@ -311,6 +317,7 @@
 
 - (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key {
   @try {
+    DLog(@"value: %@ forKey: %@",newValue,key);
     // get reference to current run of current task...
     NSMutableDictionary* currentRun = 
       [[registry valueForKeyPath:
@@ -361,6 +368,7 @@ NSString * const RRFSessionSubjectKey = @"subject";
 NSString * const RRFSessionSessionKey = @"session";
 NSString * const RRFSessionMachineKey = @"machine";
 NSString * const RRFSessionStartKey = @"start";
+NSString * const RRFSessionStartTaskKey = @"startTask";
 NSString * const RRFSessionEndKey = @"end";
 NSString * const RRFSessionDescriptionKey  = @"description";
 NSString * const RRFSessionCreationDateKey = @"creationDate";

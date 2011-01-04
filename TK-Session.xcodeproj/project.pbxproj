@@ -13,6 +13,8 @@
 		404DF3A91279EC34000D1CC4 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 404DF3A41279EC34000D1CC4 /* TKSession.m */; };
 		404DF3AD1279EC45000D1CC4 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404DF3AC1279EC45000D1CC4 /* version.plist */; };
 		4079CA8B12D0DD1F009B23AC /* TKSessionAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4079CA8A12D0DD1F009B23AC /* TKSessionAppDelegate.m */; };
+		40D07E1F12D3B70500ACF2CC /* RRFLoop.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40D07E1E12D3B70500ACF2CC /* RRFLoop.bundle */; };
+		40D07E3A12D3B77800ACF2CC /* RRFAlarm.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40D07E3912D3B77800ACF2CC /* RRFAlarm.bundle */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -26,6 +28,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				40352BA412CA40760071EECA /* TKUtility.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40D07E1812D3B6B900ACF2CC /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				40D07E3A12D3B77800ACF2CC /* RRFAlarm.bundle in CopyFiles */,
+				40D07E1F12D3B70500ACF2CC /* RRFLoop.bundle in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +59,8 @@
 		404DF3AC1279EC45000D1CC4 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
 		4079CA8912D0DD1F009B23AC /* TKSessionAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSessionAppDelegate.h; sourceTree = "<group>"; };
 		4079CA8A12D0DD1F009B23AC /* TKSessionAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSessionAppDelegate.m; sourceTree = "<group>"; };
+		40D07E1E12D3B70500ACF2CC /* RRFLoop.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFLoop.bundle; path = plugins/RRFLoop.bundle; sourceTree = "<group>"; };
+		40D07E3912D3B77800ACF2CC /* RRFAlarm.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFAlarm.bundle; path = plugins/RRFAlarm.bundle; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* TK-Session.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TK-Session.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -125,6 +140,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				40D07E1912D3B6D400ACF2CC /* bundles */,
 				404DF3AC1279EC45000D1CC4 /* version.plist */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -142,6 +158,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		40D07E1912D3B6D400ACF2CC /* bundles */ = {
+			isa = PBXGroup;
+			children = (
+				40D07E3912D3B77800ACF2CC /* RRFAlarm.bundle */,
+				40D07E1E12D3B70500ACF2CC /* RRFLoop.bundle */,
+			);
+			name = bundles;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -153,6 +178,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				40352BA112CA404B0071EECA /* CopyFiles */,
+				40D07E1812D3B6B900ACF2CC /* CopyFiles */,
 			);
 			buildRules = (
 			);
