@@ -63,10 +63,13 @@
   // update end in registry file
   [self setValue:[NSDate date] forRunRegistryKey:@"end"];
   // TODO: incorp offset in dictionary get the next value
+  NSInteger offset = [[[components valueForKey:currentComponentID]
+                       objectForKey:RRFSessionComponentsOffsetKey]
+                      integerValue];
   // get jump value
   NSString *jumpToTask = [[[components valueForKey:currentComponentID]
                            valueForKey:RRFSessionComponentsJumpsKey]
-                          objectAtIndex:0];
+                          objectAtIndex:offset];
   DLog(@"Jump value for task: %@ is %@",currentComponentID,jumpToTask);
   [self launchComponentWithID:jumpToTask];
 }
@@ -367,6 +370,7 @@ NSString * const RRFSessionLastRunDateKey = @"lastRunDate";
 NSString * const RRFSessionComponentsKey = @"components";
 NSString * const RRFSessionComponentsDefinitionKey = @"definition";
 NSString * const RRFSessionComponentsJumpsKey = @"jumps";
+NSString * const RRFSessionComponentsOffsetKey = @"jumpOffset";
 NSString * const RRFSessionHistoryKey = @"history"; 
 NSString * const RRFSessionRunKey = @"runs";
 

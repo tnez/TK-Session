@@ -121,6 +121,7 @@ NSString * const RRFSessionLastRunDateKey;
 NSString * const RRFSessionComponentsKey;
 NSString * const RRFSessionComponentsDefinitionKey;
 NSString * const RRFSessionComponentsJumpsKey;
+NSString * const RRFSessionComponentsOffsetKey;
 NSString * const RRFSessionHistoryKey;
 NSString * const RRFSessionRunKey;
 
