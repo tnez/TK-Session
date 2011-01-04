@@ -34,8 +34,13 @@
 
 - (id)init {
   if([super init]) {
+    // create our registry file
     pathToRegistryFile = [[NSString alloc]
                           initWithString:RRFSessionPathToRegistryFileKey];
+    registry = [[NSMutableDictionary alloc] initWithCapacity:3];
+    // top level objects of registry
+    // {dict:session,dict:components,array:history}
+    DLog(@"Session created");
     return self;
   }
   return nil;
@@ -45,24 +50,84 @@
   //add entry to component history
   [[registry valueForKey:RRFSessionHistoryKey] addObject:currentComponentID];
   // create a new run entry for current task
-  [[[self registryForTaskWithOffset:0]
+  [[[self registryForTask:currentComponentID]
     valueForKey:RRFSessionRunKey]
    addObject:[NSMutableDictionary dictionaryWithCapacity:2]];
   // update start in registry file
   [self setValue:[NSDate date] forRunRegistryKey:@"start"];
-  // TODO: notify that registry has changed
 }
 
 - (void)componentDidFinish: (NSNotification *)info {
   // update end in registry file
   [self setValue:[NSDate date] forRunRegistryKey:@"end"];
-  // TODO: notify that registry has changed
+  // TODO: incorp offset in dictionary get the next value
+  // get jump value
+  NSString *jumpToTask = [[[self registryForTaskWithOffset:0]
+                           valueForKey:RRFSessionComponentsJumpsKey]
+                          objectAtIndex:0];
+  DLog(@"Jump value for task: %@ is %@",currentComponentID,jumpToTask);
+  [self launchComponentWithID:jumpToTask];
 }
 
 - (void)componentWillBegin: (NSNotification *)info {
   // ...as of now there is nothing to do here...
 }
 
+- (BOOL)initRegistryFile {
+  @try {
+    // latch path to registry file
+    pathToRegistryFile = [[NSString alloc]
+                          initWithString:RRFSessionPathToRegistryFileKey];
+    // create empty file at path
+    if(![[NSFileManager defaultManager]
+         createFileAtPath:[self pathToRegistryFile]
+         contents:nil attributes:nil]) {
+      ELog(@"Could not create empty registry file on disk");
+      return NO;
+    }
+    // create registry in memory
+    registry = [[NSMutableDictionary alloc] init];
+    // load global session info
+    [registry setValue:[subject study] forKey:RRFSessionProtocolKey];
+    [registry setValue:[subject subject_id] forKey:RRFSessionSubjectKey];
+    [registry setValue:[subject session] forKey:RRFSessionSessionKey];
+    [registry setValue:[NSDate date] forKey:RRFSessionStartKey];
+    DLog(@"Loaded global values in registry");
+    // create empty history
+    [registry setValue:[NSMutableArray array] forKey:RRFSessionHistoryKey];
+    DLog(@"Created empty history in registry");
+    // create empty components dictionary
+    [registry setValue:[NSMutableDictionary dictionary]
+                forKey:RRFSessionComponentsKey];
+    DLog(@"Created empty component block in registry");
+
+    // for every element in the component block of the manifest
+    // create an a mutable dictionary with the key of task ID
+    // and a nested runs mutable dictionary
+    NSMutableDictionary *compSection =
+      [registry valueForKey:RRFSessionComponentsKey];
+    for(NSString *taskID in [components allKeys]) {
+      // create the component registry
+      [compSection setValue:[NSMutableDictionary dictionary] forKey:taskID];
+      // create an empty run registry inside
+      NSMutableDictionary* curSection = [compSection valueForKey:taskID];
+      [curSection setValue:[NSMutableArray array]
+                    forKey:RRFSessionRunKey];
+    } // end for loop
+    DLog(@"Created entries for all components in registry");
+    // we have succeeded (presumably) :}
+    [self registryDidChange];    
+    return YES;
+  } // end of try block
+  @catch (NSException * e) {
+    // we have failed :{
+    ELog(@"Encountered exception when trying to create registry file: %@",
+         e);
+    return NO;
+  }
+  return NO; // bleh
+}
+   
 - (id)initWithFile: (NSString *)filename {
   if([self init]) {
     // read session file
@@ -71,20 +136,31 @@
     if(!manifest) {
       ELog(@"Could not read session file: %@",filename);
     }
+    // create components
+    components = [[NSDictionary alloc] initWithDictionary:
+                  [manifest valueForKey:RRFSessionComponentsKey]];
+    if(!components) {
+      ELog(@"Could not create components from manifest");
+    }
     return self;
   }
   return nil;
 }
 
-- (BOOL)launchComponentWithID: (NSInteger)componentID {
+- (BOOL)launchComponentWithID: (NSString *)componentID {
+  // grab current component ID
+  if(currentComponentID) {
+    [currentComponentID release];
+  }
+  currentComponentID = [[NSString alloc] initWithString:componentID];
   // if componentID is equal to zero, we are signifying the end condition
-  if(componentID == 0) {
+  if([componentID isEqualToString:@"end"]) {
     // TODO: we need to end the session here
     return YES;
   } 
   // attempt to get the corresponding definition
   NSDictionary *componentDefinition =
-    [components objectForKey: [NSString stringWithFormat:@"%d",componentID]];
+    [[components objectForKey:componentID] objectForKey:@"definition"];
   // if we found a definition for the given component ID...
   if(componentDefinition) {
     // attempt to load the component and begin
@@ -93,8 +169,8 @@
     // if the new component is cleared to begin...
     if([newComponent isClearedToBegin]) {
       // begin and return
-      DLog(@"Attempting to start new component: %@",
-           [[NSDate date] description]);
+      DLog(@"Attempting to start new component: %@",componentDefinition);
+      // add entry to registry file history
       [newComponent begin];
       return YES;
     } else { // there was an error while attempting to start component
@@ -102,7 +178,7 @@
       return NO;
     }
   } else { // we could not find a valid component definition
-    ELog(@"Could not get definition for component with ID: %d",componentID);
+    ELog(@"Could not get definition for component with ID: %@",componentID);
     return NO;
   }
 }
@@ -123,6 +199,11 @@
 }
 
 - (BOOL)run {
+  // setup registry file
+  if(![self initRegistryFile]) {
+    ELog(@"Could not initialize registry file");
+    return NO;
+  }
   // register for notifications from components
   NSNotificationCenter *postOffice = [NSNotificationCenter defaultCenter];
   [postOffice addObserver:self
@@ -137,10 +218,11 @@
                  selector:@selector(componentDidFinish:)
                      name:TKComponentDidFinishNotification
                    object:nil];
+  
   // load the next component using ID == 1
   // this ID is designated for the first component
-  if([self launchComponentWithID:1]) {
-    DLog(@"Session has started run at: %@",[[NSDate date] description]);
+  if([self launchComponentWithID:@"1"]) {
+    DLog(@"Session has started run at: %@",[NSDate date]);
     return YES;
   } else {
     // there was a problem starting the session run
@@ -197,7 +279,7 @@
     retValue = [self registryForTask:targetID];
   }
   @catch (NSException * e) {
-    ELog(@"Could not find task with offset: %d",offset);
+    ELog(@"Could not find task with offset: %d Exception: %@",offset,e);
   }
   @finally {
     return [retValue autorelease];
@@ -208,37 +290,36 @@
 - (void)setValue: (id)newValue forRegistryKey: (NSString *)key {
   @try {
     // get reference to current task...
-    // first get current task ID
-    NSString *curTaskID = [[registry valueForKey:RRFSessionHistoryKey]
-                           lastObject];
-    // then get the reference to the current task
     NSMutableDictionary *currentTask = 
-    [[registry valueForKey:RRFSessionComponentsKey] valueForKey:curTaskID];
+    [[registry valueForKey:RRFSessionComponentsKey]
+     valueForKey:currentComponentID];
     // set value for said dictionary
     [currentTask setValue:newValue forKey:key];
+    // we did change
+    [self registryDidChange];
   }
   @catch (NSException * e) {
-    ELog(@"Could not set value for registry key: %@",key);
+    ELog(@"Could not set value for run registry key: %@ due to exception: %@",
+         key,e);
   }
 }
 
 - (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key {
   @try {
-  // get reference to current task...
-    // first get current task ID
-    NSString *curTaskID = [[registry valueForKey:RRFSessionHistoryKey]
-                           lastObject];
-    // then get the reference to the current task
-    NSMutableDictionary *currentTask = 
-    [[registry valueForKey:RRFSessionComponentsKey] valueForKey:curTaskID];
-    // get the reference to the current run of current task
-    NSMutableDictionary *currentRun =
-    [[currentTask valueForKey:RRFSessionRunKey] lastObject];
+    // get reference to current run of current task...
+    NSMutableDictionary* currentRun = 
+      [[registry valueForKeyPath:
+        [NSString stringWithFormat:
+         @"%@.%@.%@",RRFSessionComponentsKey,currentComponentID,
+         RRFSessionRunKey]] lastObject];
     // set value for said dictionary
     [currentRun setValue:newValue forKey:key];
+    // we did change
+    [self registryDidChange];
   }
   @catch (NSException * e) {
-    ELog(@"Could not set value for run registry key: %@",key);
+    ELog(@"Could not set value for run registry key: %@ due to exception: %@",
+         key,e);
   }
 }
 
@@ -271,6 +352,11 @@
 
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey = @"protocol";
+NSString * const RRFSessionSubjectKey = @"subject";
+NSString * const RRFSessionSessionKey = @"session";
+NSString * const RRFSessionMachineKey = @"machine";
+NSString * const RRFSessionStartKey = @"start";
+NSString * const RRFSessionEndKey = @"end";
 NSString * const RRFSessionDescriptionKey  = @"description";
 NSString * const RRFSessionCreationDateKey = @"creationDate";
 NSString * const RRFSessionModifiedDateKey = @"modifiedDate";
@@ -283,6 +369,6 @@ NSString * const RRFSessionHistoryKey = @"history";
 NSString * const RRFSessionRunKey = @"runs";
 
 #pragma mark Environmental Constants
-NSString * const RRFSessionPathToRegistryFileKey = @"~/Desktop";
+NSString * const RRFSessionPathToRegistryFileKey = @"~/Desktop/regfile.plist";
 
 @end

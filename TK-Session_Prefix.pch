@@ -7,9 +7,9 @@
  ELog: informative log that will occur even in production builds
  DLog: informative log that will only occur in debug builds
  */
-#define ELog(...) NSLog(@"%s (line: %d) %@",__PRETTY_FUNCTION__,[NSString stringWithFormat:__VA_ARGS__])
+#define ELog(...) NSLog(@"%s %@",__PRETTY_FUNCTION__,[NSString stringWithFormat:__VA_ARGS__])
 #ifdef DEBUG 
-  #define DLog(...) NSLog(@"%s (line: %d) %@",__PRETTY_FUNCTION__,[NSString stringWithFormat:__VA_ARGS__])
+  #define DLog(...) NSLog(@"%s %@",__PRETTY_FUNCTION__,[NSString stringWithFormat:__VA_ARGS__])
 #else
   #define DLog(...) do { } while(0)
 #endif

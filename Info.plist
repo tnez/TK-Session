@@ -14,11 +14,11 @@
 			<key>CFBundleTypeName</key>
 			<string>Session</string>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>LSTypeIsPackage</key>
 			<false/>
 			<key>NSPersistentStoreTypeKey</key>
-			<string>XML</string>
+			<string>InMemory</string>
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>

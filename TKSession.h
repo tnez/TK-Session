@@ -52,7 +52,7 @@
  Return Value - Will return YES if component was identified and could begin,
  otherwise will return NO.
  */
-- (BOOL)launchComponentWithID: (NSInteger)componentID;
+- (BOOL)launchComponentWithID: (NSString *)componentID;
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile;
 - (BOOL)passedPreflightCheck: (NSString **)errorString;
 - (BOOL)run;
@@ -106,7 +106,12 @@
 
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey;
+NSString * const RRFSessionSubjectKey;
+NSString * const RRFSessionSessionKey;
+NSString * const RRFSessionMachineKey;
 NSString * const RRFSessionDescriptionKey;
+NSString * const RRFSessionStartKey;
+NSString * const RRFSessionEndKey;
 NSString * const RRFSessionCreationDateKey;
 NSString * const RRFSessionModifiedDateKey;
 NSString * const RRFSessionStatusKey;

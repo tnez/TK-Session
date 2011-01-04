@@ -19,18 +19,38 @@
 		<key>1</key>
 		<dict>
 			<key>definition</key>
-			<dict/>
+			<dict>
+				<key>TKComponentType</key>
+				<integer>1</integer>
+				<key>TKComponentName</key>
+				<string>Coda</string>
+				<key>TKComponentCocoaAppPath</key>
+				<string>/Applications/Coda</string>
+				<key>TKComponentCocoaAppTaskName</key>
+				<string>CSSEdit</string>
+			</dict>
 			<key>jumps</key>
 			<array>
-				<integer>1</integer>
+				<string>2</string>
 			</array>
 		</dict>
 		<key>2</key>
 		<dict>
 			<key>definition</key>
-			<dict/>
+			<dict>
+				<key>TKComponentType</key>
+				<integer>1</integer>
+				<key>TKComponentName</key>
+				<string>TextEdit</string>
+				<key>TKComponentCocoaAppPath</key>
+				<string>/Applications/TextEdit</string>
+				<key>TKComponentCocoaAppTaskName</key>
+				<string>Braindump</string>
+			</dict>
 			<key>jumps</key>
-			<array/>
+			<array>
+				<string>end</string>
+			</array>
 		</dict>
 	</dict>
 </dict>

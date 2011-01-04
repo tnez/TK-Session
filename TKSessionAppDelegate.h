@@ -8,20 +8,31 @@
 //  of Kentucky. All Rights Reserved.
 /////////////////////////////////////////////////////////////
 #import <Cocoa/Cocoa.h>
+#import <TKUtility/TKUtility.h>
 
-// forward declarations
 @class TKSession;
 
 @interface TKSessionAppDelegate : NSObject {
   TKSession *session;
+  IBOutlet TKSubject *subject;
+  IBOutlet NSWindow *setupWindow;
+  IBOutlet NSTextField *protocolField;
 }
+@property (assign) IBOutlet TKSubject *subject;
+@property (assign) IBOutlet NSWindow *setupWindow;
+@property (assign) IBOutlet NSTextField *protocolField;
 
+- (void)applicationWillFinishLaunching: (NSNotification *)aNotification;
+- (void)applicationDidFinishLaunching: (NSNotification *)aNotification;
 /**
  See NSApplicationDelegate protocol for documentation
  This method is nesc. for the session to be able to launch applications from
  the finder or by drag and drop on to the dock
  */
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename;
+- (void)awakeFromNib;
+- (IBAction)cancel: (id)sender;
+- (IBAction)begin: (id)sender;
 
 #pragma mark Environmental Constants
 NSString * const RRFSessionSessionExtensionKey;
