@@ -250,16 +250,18 @@
     // attempt to move the file
     DLog(@"Attempting to copy registry file:%@ to dir:%@",
          [pathToRegistryFile stringByStandardizingPath],
-         [[manifest valueForKey:RRFSessionDataDirectoryKey]
-          stringByAppendingPathComponent:targetName]);
-    NSError *copyError;
+         [[[manifest valueForKey:RRFSessionDataDirectoryKey]
+          stringByAppendingPathComponent:targetName]
+          stringByStandardizingPath]);
+    NSError *copyError = nil;
     NSFileManager *fm = [NSFileManager defaultManager];
     [fm copyItemAtPath:[pathToRegistryFile stringByStandardizingPath]
-                toPath:[[manifest valueForKey:RRFSessionDataDirectoryKey] 
+                toPath:[[[manifest valueForKey:RRFSessionDataDirectoryKey] 
                         stringByAppendingPathComponent:targetName]
+                        stringByStandardizingPath]
                  error:&copyError];
     if(copyError) {
-      ELog(@"There was a problem moving the registry file");
+      ELog(@"There was a problem moving the registry file: %@",copyError);
     } else { // copy was successful
       DLog(@"Attempting to delete registry file:%@",
            [pathToRegistryFile stringByStandardizingPath]);
@@ -419,6 +421,6 @@ NSString * const RRFSessionHistoryKey = @"history";
 NSString * const RRFSessionRunKey = @"runs";
 
 #pragma mark Environmental Constants
-NSString * const RRFSessionPathToRegistryFileKey = @"~/Desktop/regfile.plist";
+NSString * const RRFSessionPathToRegistryFileKey = @"session.regfile.plist~";
 
 @end
