@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TKComponentType</key>
+	<integer>0</integer>
+	<key>TKComponentName</key>
+	<string>ARS</string>
+	<key>TKComponentBundleName</key>
+	<string>RRFARS</string>
+	<key>TKComponentBundleIdentifier</key>
+	<string>com.rrf.component.ARS</string>
+	<key>TKComponentOptions</key>
+	<array>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSTaskName</string>
+			<key>displayName</key>
+			<string>Task Name</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string>ARS</string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>The task name will be appended to the name of the data file</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSDataDirectory</string>
+			<key>displayName</key>
+			<string>Data Directory</string>
+			<key>type</key>
+			<integer>3</integer>
+			<key>default</key>
+			<string></string>
+			<key>isDirectory</key>
+			<true/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Directory where component will save data file - Initial value is set to session global</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSQuestionFile</string>
+			<key>displayName</key>
+			<string>Question File</string>
+			<key>type</key>
+			<integer>3</integer>
+			<key>default</key>
+			<string></string>
+			<key>isDirectory</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>File containing (ordered) questions</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSQuestionAccessMethod</string>
+			<key>displayName</key>
+			<string>Question Access Method</string>
+			<key>type</key>
+			<integer>4</integer>
+                        <key>enumeratedList</key>
+			<array>
+				<string>Sequential Access</string>
+				<string>Random Access Without Replacement</string>
+			</array>
+			<key>default</key>
+                        <integer>0</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Method by which questions will be selected</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSRatingsStartAtZero</string>
+			<key>displayName</key>
+			<string>Ratings Start At Zero</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+                        <true/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>If yes, rating scale starts at zero - If no, rating scale starts at 1</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSAdjective0</string>
+			<key>displayName</key>
+			<string>Adjective 0</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Adjective 0</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSAdjective1</string>
+			<key>displayName</key>
+			<string>Adjective 1</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Adjective 1</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSAdjective2</string>
+			<key>displayName</key>
+			<string>Adjective 2</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Adjective 2</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSAdjective3</string>
+			<key>displayName</key>
+			<string>Adjective 3</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Adjective 3</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFARSAdjective4</string>
+			<key>displayName</key>
+			<string>Adjective 4</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Adjective 4</string>
+		</dict>
+	</array>
+</dict>
+</plist>

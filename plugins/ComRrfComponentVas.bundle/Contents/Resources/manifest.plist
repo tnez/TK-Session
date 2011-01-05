@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TKComponentType</key>
+	<real>0</real>
+	<key>TKComponentName</key>
+	<string>Visual Analog Scale</string>
+	<key>TKComponentBundleName</key>
+	<string>ComRrfComponentVas</string>
+	<key>TKComponentBundleIdentifier</key>
+	<string>com.rrf.component.vas</string>
+	<key>TKComponentOptions</key>
+	<array>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasTaskName</string>
+			<key>displayName</key>
+			<string>Task Name</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string>VAS</string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>The task name will be appended to the name of the data file</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasDataDirectory</string>
+			<key>displayName</key>
+			<string>Data Directory</string>
+			<key>type</key>
+			<integer>3</integer>
+			<key>default</key>
+			<string></string>
+			<key>isDirectory</key>
+			<true/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>Directory where component will save data file - Initial value is equal to Session&apos;s global data directory value</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasQuestionFile</string>
+			<key>displayName</key>
+			<string>Question File</string>
+			<key>type</key>
+			<integer>3</integer>
+			<key>default</key>
+			<string></string>
+			<key>isDirectory</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Select a tab-delimited file from which to pull questions</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasQuestionAccessMethod</string>
+			<key>displayName</key>
+			<string>Access Method</string>
+			<key>type</key>
+			<integer>4</integer>
+			<key>enumeratedList</key>
+			<array>
+				<string>Sequential Access</string>
+				<string>Random Access Without Replacement</string>
+				<string>Random Access With Replacement</string>
+			</array>
+			<key>default</key>
+			<integer>0</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Order in which to present the questions</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasNumberOfIntendedQuestions</string>
+			<key>displayName</key>
+			<string>Number Of Inteded Questions</string>
+			<key>type</key>
+			<integer>1</integer>
+			<key>default</key>
+			<integer>0</integer>
+			<key>min</key>
+			<integer>0</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>Number of intended questions - use 0 if you wish to ask every question in set</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasNumberOfTickMarks</string>
+			<key>displayName</key>
+			<string>Number Of Tick Marks</string>
+			<key>type</key>
+			<integer>1</integer>
+			<key>default</key>
+			<integer>2</integer>
+			<key>min</key>
+			<integer>0</integer>
+			<key>max</key>
+			<integer>20</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>Number of tick marks you wish displayed on the visual analog scale</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasLeftPrompt</string>
+			<key>displayName</key>
+			<string>Left Prompt</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string>Not Very</string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>Text displayed below left hand side of scale</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasMiddlePrompt</string>
+			<key>displayName</key>
+			<string>Middle Prompt</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>Prompt displayed below middle of scale</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasRightPrompt</string>
+			<key>displayName</key>
+			<string>Right Prompt</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string>Extremely</string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>Prompt displayed below middle of scale</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasMinValue</string>
+			<key>displayName</key>
+			<string>Minimum Slider Value</string>
+			<key>type</key>
+			<integer>1</integer>
+			<key>default</key>
+			<integer>0</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>TKVasMaxValue</string>
+			<key>displayName</key>
+			<string>Maximum Slider Value</string>
+			<key>type</key>
+			<integer>1</integer>
+			<key>default</key>
+			<integer>99</integer>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+		</dict>
+	</array>
+</dict>
+</plist>
