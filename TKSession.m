@@ -167,7 +167,7 @@
   [self setValue:[NSDate date] forRunRegistryKey:@"start"];
   // attempt to get the corresponding definition
   NSDictionary *componentDefinition =
-    [[components objectForKey:componentID] objectForKey:@"definition"];
+    [[components objectForKey:componentID] valueForKey:@"definition"];
   // if we found a definition for the given component ID...
   if(componentDefinition) {
     // attempt to load the component and begin
