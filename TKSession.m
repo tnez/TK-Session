@@ -170,8 +170,8 @@
     // attempt to load the component and begin
     [self setCompObj:
      [TKComponentController loadFromDefinition:componentDefinition]];
-    // register ourself as the delegate for the new component
     [compObj setDelegate:self];
+    [compObj setSubject:subject];
     // if the new component is cleared to begin...
     if([compObj isClearedToBegin]) {
       // begin and return
