@@ -152,10 +152,7 @@
   currentComponentID = [[NSString alloc] initWithString:componentID];
   // if componentID is equal to zero, we are signifying the end condition
   if([componentID isEqualToString:@"end"]) {
-    // TODO: we need to end the session here
-    DLog(@"Ending Session!");
-    [NSApp terminate];
-    return YES;
+    [self tearDown];
   } 
   //add entry to component history
   [[registry valueForKey:RRFSessionHistoryKey] addObject:currentComponentID];
@@ -238,6 +235,44 @@
     // there was a problem starting the session run
     ELog(@"Session could not be started");
     return NO;
+  }
+}
+
+- (void)tearDown {
+  // move registry file to data directory
+  @try {
+   // get target file name
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateFormat:@"yyyy_MM_dd"];
+    NSString *targetName = [NSString stringWithFormat:@"%@_%@_REG_%@.plist",
+                            [subject study],[subject subject_id],
+                            [formatter stringFromDate:[NSDate date]]];
+    // attempt to move the file
+    DLog(@"Attempting to copy registry file:%@ to dir:%@",
+         [pathToRegistryFile stringByStandardizingPath],
+         [[manifest valueForKey:RRFSessionDataDirectoryKey]
+          stringByAppendingPathComponent:targetName]);
+    NSError *copyError;
+    NSFileManager *fm = [NSFileManager defaultManager];
+    [fm copyItemAtPath:[pathToRegistryFile stringByStandardizingPath]
+                toPath:[[manifest valueForKey:RRFSessionDataDirectoryKey] 
+                        stringByAppendingPathComponent:targetName]
+                 error:&copyError];
+    if(copyError) {
+      ELog(@"There was a problem moving the registry file");
+    } else { // copy was successful
+      DLog(@"Attempting to delete registry file:%@",
+           [pathToRegistryFile stringByStandardizingPath]);
+      [fm removeItemAtPath:[pathToRegistryFile stringByStandardizingPath]
+                     error:nil];
+    }
+  }
+  @catch (NSException * e) {
+    ELog(@"%@",e);
+  }
+  @finally {
+    DLog(@"Terminating application");
+    [NSApp terminate:self];
   }
 }
 
@@ -371,6 +406,7 @@ NSString * const RRFSessionStartKey = @"start";
 NSString * const RRFSessionStartTaskKey = @"startTask";
 NSString * const RRFSessionEndKey = @"end";
 NSString * const RRFSessionDescriptionKey  = @"description";
+NSString * const RRFSessionDataDirectoryKey = @"dataDirectory";
 NSString * const RRFSessionCreationDateKey = @"creationDate";
 NSString * const RRFSessionModifiedDateKey = @"modifiedDate";
 NSString * const RRFSessionStatusKey = @"status";

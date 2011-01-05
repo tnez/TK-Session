@@ -58,6 +58,7 @@
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile;
 - (BOOL)passedPreflightCheck: (NSString **)errorString;
 - (BOOL)run;
+- (void)tearDown;
 
 #pragma mark Registry Accessors
 /**
@@ -112,6 +113,7 @@ NSString * const RRFSessionSubjectKey;
 NSString * const RRFSessionSessionKey;
 NSString * const RRFSessionMachineKey;
 NSString * const RRFSessionDescriptionKey;
+NSString * const RRFSessionDataDirectoryKey;
 NSString * const RRFSessionStartKey;
 NSString * const RRFSessionStartTaskKey;
 NSString * const RRFSessionEndKey;
