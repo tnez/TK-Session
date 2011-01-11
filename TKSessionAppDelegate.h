@@ -16,10 +16,12 @@
   TKSession *session;
   IBOutlet TKSubject *subject;
   IBOutlet NSWindow *setupWindow;
+  IBOutlet NSWindow *sessionWindow;
   IBOutlet NSTextField *protocolField;
 }
 @property (assign) IBOutlet TKSubject *subject;
 @property (assign) IBOutlet NSWindow *setupWindow;
+@property (assign) IBOutlet NSWindow *sessionWindow;
 @property (assign) IBOutlet NSTextField *protocolField;
 
 - (void)applicationWillFinishLaunching: (NSNotification *)aNotification;
@@ -32,6 +34,7 @@
 - (BOOL)application:(NSApplication *)theApplication openFile:(NSString *)filename;
 - (void)awakeFromNib;
 - (IBAction)cancel: (id)sender;
+- (void)createTabDelimitedSubjectFile;
 - (IBAction)begin: (id)sender;
 
 #pragma mark Environmental Constants

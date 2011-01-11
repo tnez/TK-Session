@@ -11,7 +11,8 @@
 #import "TKSession.h"
 
 @implementation TKSession
-@synthesize components,manifest,pathToRegistryFile,compObj,subject;
+@synthesize components,manifest,pathToRegistryFile,compObj,subject,
+sessionWindow;
 
 #pragma mark Housekeeping
 - (void)awakeFromNib {
@@ -79,7 +80,8 @@
     if(![[NSFileManager defaultManager]
          createFileAtPath:[self pathToRegistryFile]
          contents:nil attributes:nil]) {
-      ELog(@"Could not create empty registry file on disk");
+      ELog(@"Could not create empty registry file on disk: %@",
+           [self pathToRegistryFile]);
       return NO;
     }
     // create registry in memory
@@ -171,6 +173,7 @@
     [self setCompObj:
      [TKComponentController loadFromDefinition:componentDefinition]];
     [compObj setDelegate:self];
+    [compObj setSessionWindow:sessionWindow];
     [compObj setSubject:subject];
     // if the new component is cleared to begin...
     if([compObj isClearedToBegin]) {
@@ -224,7 +227,12 @@
                  selector:@selector(componentDidFinish:)
                      name:TKComponentDidFinishNotification
                    object:nil];
-  
+  // setup loggers and timers
+  [NSThread detachNewThreadSelector:@selector(spawnAndBeginTimer:) toTarget:[TKTimer class] withObject:nil];
+  DLog(@"Session timer started");
+  [NSThread detachNewThreadSelector:@selector(spawnMainLogger:) toTarget:[TKLogging class] withObject:nil];
+  [NSThread detachNewThreadSelector:@selector(spawnCrashRecoveryLogger:) toTarget:[TKLogging class] withObject:nil];
+  DLog(@"Session logs started");  
   // load the next component using ID == 1
   // this ID is designated for the first component
   if([self launchComponentWithID:
@@ -421,6 +429,6 @@ NSString * const RRFSessionHistoryKey = @"history";
 NSString * const RRFSessionRunKey = @"runs";
 
 #pragma mark Environmental Constants
-NSString * const RRFSessionPathToRegistryFileKey = @"session.regfile.plist~";
+NSString * const RRFSessionPathToRegistryFileKey = @"~/Desktop/regfile.plist";
 
 @end

@@ -71,13 +71,13 @@
 			<string>Question Access Method</string>
 			<key>type</key>
 			<integer>4</integer>
-                        <key>enumeratedList</key>
+			<key>enumeratedList</key>
 			<array>
 				<string>Sequential Access</string>
 				<string>Random Access Without Replacement</string>
 			</array>
 			<key>default</key>
-                        <integer>0</integer>
+			<integer>0</integer>
 			<key>allowsEdit</key>
 			<true/>
 			<key>allowsNull</key>
@@ -93,7 +93,7 @@
 			<key>type</key>
 			<integer>2</integer>
 			<key>default</key>
-                        <true/>
+			<true/>
 			<key>allowsEdit</key>
 			<true/>
 			<key>allowsNull</key>

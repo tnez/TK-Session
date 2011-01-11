@@ -10,6 +10,11 @@
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		40352B8A12CA40050071EECA /* TKUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40352B8912CA40050071EECA /* TKUtility.framework */; };
 		40352BA412CA40760071EECA /* TKUtility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40352B8912CA40050071EECA /* TKUtility.framework */; };
+		4040C78912D4DE540092DD7A /* ComRrfComponentVas.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75212D4DDF10092DD7A /* ComRrfComponentVas.bundle */; };
+		4040C79312D4DE620092DD7A /* RRFARS.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75612D4DDFC0092DD7A /* RRFARS.bundle */; };
+		4040C79912D4DE6A0092DD7A /* RRFClickReady.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75A12D4DE060092DD7A /* RRFClickReady.bundle */; };
+		4040C79A12D4DE700092DD7A /* RRFNBack.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C77F12D4DE340092DD7A /* RRFNBack.bundle */; };
+		4040C79B12D4DE790092DD7A /* RRFPause.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C78512D4DE4A0092DD7A /* RRFPause.bundle */; };
 		404DF3A91279EC34000D1CC4 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 404DF3A41279EC34000D1CC4 /* TKSession.m */; };
 		404DF3AD1279EC45000D1CC4 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404DF3AC1279EC45000D1CC4 /* version.plist */; };
 		4079CA8B12D0DD1F009B23AC /* TKSessionAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4079CA8A12D0DD1F009B23AC /* TKSessionAppDelegate.m */; };
@@ -21,6 +26,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		401205B012D54E1200329BE2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 1;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		40352BA112CA404B0071EECA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -37,8 +51,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				4040C78912D4DE540092DD7A /* ComRrfComponentVas.bundle in CopyFiles */,
 				40D07E3A12D3B77800ACF2CC /* RRFAlarm.bundle in CopyFiles */,
+				4040C79312D4DE620092DD7A /* RRFARS.bundle in CopyFiles */,
+				4040C79912D4DE6A0092DD7A /* RRFClickReady.bundle in CopyFiles */,
 				40D07E1F12D3B70500ACF2CC /* RRFLoop.bundle in CopyFiles */,
+				4040C79A12D4DE700092DD7A /* RRFNBack.bundle in CopyFiles */,
+				4040C79B12D4DE790092DD7A /* RRFPause.bundle in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +73,11 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TK-Session_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TK-Session_Prefix.pch"; sourceTree = "<group>"; };
 		40352B8912CA40050071EECA /* TKUtility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TKUtility.framework; sourceTree = "<group>"; };
+		4040C75212D4DDF10092DD7A /* ComRrfComponentVas.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ComRrfComponentVas.bundle; path = plugins/ComRrfComponentVas.bundle; sourceTree = "<group>"; };
+		4040C75612D4DDFC0092DD7A /* RRFARS.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFARS.bundle; path = plugins/RRFARS.bundle; sourceTree = "<group>"; };
+		4040C75A12D4DE060092DD7A /* RRFClickReady.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFClickReady.bundle; path = plugins/RRFClickReady.bundle; sourceTree = "<group>"; };
+		4040C77F12D4DE340092DD7A /* RRFNBack.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFNBack.bundle; path = plugins/RRFNBack.bundle; sourceTree = "<group>"; };
+		4040C78512D4DE4A0092DD7A /* RRFPause.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFPause.bundle; path = plugins/RRFPause.bundle; sourceTree = "<group>"; };
 		404DF3A31279EC34000D1CC4 /* TKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSession.h; sourceTree = "<group>"; };
 		404DF3A41279EC34000D1CC4 /* TKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSession.m; sourceTree = "<group>"; };
 		404DF3AC1279EC45000D1CC4 /* version.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = version.plist; sourceTree = "<group>"; };
@@ -161,8 +185,13 @@
 		40D07E1912D3B6D400ACF2CC /* bundles */ = {
 			isa = PBXGroup;
 			children = (
+				4040C75212D4DDF10092DD7A /* ComRrfComponentVas.bundle */,
 				40D07E3912D3B77800ACF2CC /* RRFAlarm.bundle */,
+				4040C75612D4DDFC0092DD7A /* RRFARS.bundle */,
+				4040C75A12D4DE060092DD7A /* RRFClickReady.bundle */,
 				40D07E1E12D3B70500ACF2CC /* RRFLoop.bundle */,
+				4040C77F12D4DE340092DD7A /* RRFNBack.bundle */,
+				4040C78512D4DE4A0092DD7A /* RRFPause.bundle */,
 			);
 			name = bundles;
 			sourceTree = "<group>";
@@ -179,6 +208,7 @@
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				40352BA112CA404B0071EECA /* CopyFiles */,
 				40D07E1812D3B6B900ACF2CC /* CopyFiles */,
+				401205B012D54E1200329BE2 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -264,7 +294,7 @@
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_ENABLE_OBJC_GC = required;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -285,7 +315,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 				);
-				GCC_ENABLE_OBJC_GC = required;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TK-Session_Prefix.pch";
@@ -300,12 +330,14 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
 			};
 			name = Debug;
 		};
@@ -314,10 +346,12 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
+				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
 			};
 			name = Release;
 		};

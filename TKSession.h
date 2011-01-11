@@ -35,6 +35,7 @@
   TKComponentController *compObj;       // the actual component object
   TKSubject *subject;                   // the subject object created during
                                         // setup
+  NSWindow *sessionWindow;              // this is the window that bundles use
 }
 
 @property(readonly) NSDictionary *components;
@@ -42,6 +43,7 @@
 @property(readonly) NSString *pathToRegistryFile;
 @property(nonatomic, retain) TKComponentController *compObj;
 @property(nonatomic, retain) TKSubject *subject;
+@property(assign) NSWindow *sessionWindow;
 
 - (void)componentDidBegin: (NSNotification *)info;
 - (void)componentDidFinish: (NSNotification *)info;
