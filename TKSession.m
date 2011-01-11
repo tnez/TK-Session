@@ -208,11 +208,7 @@ sessionWindow;
 }
 
 - (BOOL)run {
-  // setup registry file
-  if(![self initRegistryFile]) {
-    ELog(@"Could not initialize registry file");
-    return NO;
-  }
+
   // register for notifications from components
   NSNotificationCenter *postOffice = [NSNotificationCenter defaultCenter];
   [postOffice addObserver:self
@@ -232,9 +228,32 @@ sessionWindow;
   DLog(@"Session timer started");
   [NSThread detachNewThreadSelector:@selector(spawnMainLogger:) toTarget:[TKLogging class] withObject:nil];
   [NSThread detachNewThreadSelector:@selector(spawnCrashRecoveryLogger:) toTarget:[TKLogging class] withObject:nil];
-  DLog(@"Session logs started");  
-  // load the next component using ID == 1
-  // this ID is designated for the first component
+  DLog(@"Session logs started");
+  // if the regfile still exists at path...
+  if([[NSFileManager defaultManager]
+      fileExistsAtPath:RRFSessionPathToRegistryFileKey]) {
+    // ...try to recover...
+    // load the regfile
+    [registry release]; // release the old registry
+    registry = [[NSMutableDictionary alloc]
+                initWithContentsOfFile:RRFSessionPathToRegistryFileKey];
+    // get the last object in history
+    NSString *lastRunComponent = [[registry valueForKey:RRFSessionHistoryKey]
+                                  lastObject];
+    DLog(@"Attempting to recover to last run component:%@",lastRunComponent);
+    if([self launchComponentWithID:lastRunComponent]) {
+      return YES;
+    } else { // there was a problem starting the last component
+      ELog(@"Could not recover to last run compnent:%@",lastRunComponent);
+      return NO;
+    }
+  }
+  // ...if we've made it here this can be assumed to be a new run
+  // initialize the registry file
+  if(![self initRegistryFile]) {
+    ELog(@"Could not initialize the registry file");
+  }
+  // load the next component using the start ID
   if([self launchComponentWithID:
       [manifest valueForKey:RRFSessionStartTaskKey]]) {
     DLog(@"Session has started run at: %@",[NSDate date]);
