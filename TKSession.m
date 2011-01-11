@@ -37,8 +37,9 @@ sessionWindow;
 - (id)init {
   if([super init]) {
     // create our registry file
-    pathToRegistryFile = [[NSString alloc]
-                          initWithString:RRFSessionPathToRegistryFileKey];
+    pathToRegistryFile = [[NSString alloc] initWithString:
+                          [RRFSessionPathToRegistryFileKey
+                           stringByStandardizingPath]];
     registry = [[NSMutableDictionary alloc] initWithCapacity:3];
     // top level objects of registry
     // {dict:session,dict:components,array:history}
@@ -128,7 +129,7 @@ sessionWindow;
 }
    
 - (id)initWithFile: (NSString *)filename {
-  if([self init]) {
+  if(self=[self init]) {
     // read session file
     manifest = [[NSDictionary alloc] initWithContentsOfFile:filename];
     // if there was an error reading the file...
@@ -230,13 +231,14 @@ sessionWindow;
   [NSThread detachNewThreadSelector:@selector(spawnCrashRecoveryLogger:) toTarget:[TKLogging class] withObject:nil];
   DLog(@"Session logs started");
   // if the regfile still exists at path...
+  DLog(@"Checking for regfile at path:%@",pathToRegistryFile);
   if([[NSFileManager defaultManager]
-      fileExistsAtPath:RRFSessionPathToRegistryFileKey]) {
+      fileExistsAtPath:pathToRegistryFile]) {
     // ...try to recover...
     // load the regfile
     [registry release]; // release the old registry
     registry = [[NSMutableDictionary alloc]
-                initWithContentsOfFile:RRFSessionPathToRegistryFileKey];
+                initWithContentsOfFile:pathToRegistryFile];
     // get the last object in history
     NSString *lastRunComponent = [[registry valueForKey:RRFSessionHistoryKey]
                                   lastObject];
