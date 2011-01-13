@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		40352B8A12CA40050071EECA /* TKUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40352B8912CA40050071EECA /* TKUtility.framework */; };
-		40352BA412CA40760071EECA /* TKUtility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40352B8912CA40050071EECA /* TKUtility.framework */; };
+		400928C512DF917F00392AD5 /* TKUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400928C412DF917F00392AD5 /* TKUtility.framework */; };
+		400928CA12DF91C500392AD5 /* TKUtility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 400928C412DF917F00392AD5 /* TKUtility.framework */; };
 		4040C78912D4DE540092DD7A /* ComRrfComponentVas.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75212D4DDF10092DD7A /* ComRrfComponentVas.bundle */; };
 		4040C79312D4DE620092DD7A /* RRFARS.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75612D4DDFC0092DD7A /* RRFARS.bundle */; };
 		4040C79912D4DE6A0092DD7A /* RRFClickReady.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75A12D4DE060092DD7A /* RRFClickReady.bundle */; };
@@ -41,7 +41,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				40352BA412CA40760071EECA /* TKUtility.framework in CopyFiles */,
+				400928CA12DF91C500392AD5 /* TKUtility.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +72,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TK-Session_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TK-Session_Prefix.pch"; sourceTree = "<group>"; };
-		40352B8912CA40050071EECA /* TKUtility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TKUtility.framework; sourceTree = "<group>"; };
+		400928C412DF917F00392AD5 /* TKUtility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TKUtility.framework; path = /Library/Frameworks/TKUtility.framework; sourceTree = "<absolute>"; };
 		4040C75212D4DDF10092DD7A /* ComRrfComponentVas.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ComRrfComponentVas.bundle; path = plugins/ComRrfComponentVas.bundle; sourceTree = "<group>"; };
 		4040C75612D4DDFC0092DD7A /* RRFARS.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFARS.bundle; path = plugins/RRFARS.bundle; sourceTree = "<group>"; };
 		4040C75A12D4DE060092DD7A /* RRFClickReady.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = RRFClickReady.bundle; path = plugins/RRFClickReady.bundle; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				40352B8A12CA40050071EECA /* TKUtility.framework in Frameworks */,
+				400928C512DF917F00392AD5 /* TKUtility.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				400928C412DF917F00392AD5 /* TKUtility.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -124,7 +125,6 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				40352B8912CA40050071EECA /* TKUtility.framework */,
 				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
 				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
 				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
@@ -294,13 +294,14 @@
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TK-Session_Prefix.pch";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = "TK-Session";
 			};
