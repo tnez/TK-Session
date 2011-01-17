@@ -50,11 +50,13 @@ sessionWindow;
 }
 
 - (void)componentDidBegin: (NSNotification *)info {
-  DLog(@"Component did begin");
+  DLog(@"%@ did begin",[compObj task]);
 }
 
 - (void)componentDidFinish: (NSNotification *)info {
-  DLog(@"made it here");
+  DLog(@"%@ did finish",[compObj task]);
+  // release the old compObj and set to nil
+  [compObj release];compObj=nil;
   // update end in registry file
   [self setValue:[NSDate date] forRunRegistryKey:@"end"];
   // TODO: incorp offset in dictionary get the next value
@@ -65,11 +67,12 @@ sessionWindow;
                            valueForKey:RRFSessionComponentsJumpsKey]
                           objectAtIndex:offset];
   DLog(@"Jump value for task: %@ is %@",currentComponentID,jumpToTask);
-  [self launchComponentWithID:jumpToTask];
+  [self performSelector:@selector(launchComponentWithID:)
+             withObject:jumpToTask afterDelay:0];
 }
 
 - (void)componentWillBegin: (NSNotification *)info {
-  // ...as of now there is nothing to do here...
+    DLog(@"%@ will begin",[compObj task]);
 }
 
 - (BOOL)initRegistryFile {
