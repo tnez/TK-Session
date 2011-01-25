@@ -9,10 +9,11 @@
 /////////////////////////////////////////////////////////////
 
 #import "TKSession.h"
+#import "TKFileMoveQueue.h"
 
 @implementation TKSession
-@synthesize components,manifest,pathToRegistryFile,compObj,subject,
-sessionWindow;
+@synthesize components,dataDirectory,manifest,moveQueue,pathToRegistryFile,
+compObj,subject,sessionWindow;
 
 #pragma mark Housekeeping
 - (void)awakeFromNib {
@@ -24,12 +25,14 @@ sessionWindow;
   // de-register for notifications
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   // release reserved memory
-  [manifest release];
-  [registry release];
-  [components release];
-  [pathToRegistryFile release];
-  [compObj release];
-  [subject release];
+  [dataDirectory release];dataDirectory=nil;
+  [manifest release];manifest=nil;
+  [moveQueue release];moveQueue=nil;
+  [registry release];registry=nil;
+  [components release];components=nil;
+  [pathToRegistryFile release];pathToRegistryFile=nil;
+  [compObj release];compObj=nil;
+  [subject release];subject=nil;
   // nothing for now
   [super dealloc];
 }
@@ -37,13 +40,15 @@ sessionWindow;
 - (id)init {
   if([super init]) {
     // create our registry file
-    pathToRegistryFile = [[NSString alloc] initWithString:
-                          [RRFSessionPathToRegistryFileKey
-                           stringByStandardizingPath]];
     registry = [[NSMutableDictionary alloc] initWithCapacity:3];
     // top level objects of registry
     // {dict:session,dict:components,array:history}
-    DLog(@"Session created");
+    // create our move queue... used by external apps to queue data files
+    // to be moved at end of session
+    moveQueue = [[TKFileMoveQueue alloc] initWithFilePath:
+                 [[[NSBundle mainBundle] bundlePath] 
+                  stringByAppendingPathComponent:
+                  RRFSessionPathToFileMoveQueueKey]];
     return self;
   }
   return nil;
@@ -59,7 +64,7 @@ sessionWindow;
   [compObj release];compObj=nil;
   // update end in registry file
   [self setValue:[NSDate date] forRunRegistryKey:@"end"];
-  // TODO: incorp offset in dictionary get the next value
+  // incorp offset in dictionary get the next value
   NSInteger offset = [[[self registryForTask:currentComponentID]
                        valueForKey:RRFSessionComponentsOffsetKey] integerValue];
   // get jump value
@@ -78,8 +83,9 @@ sessionWindow;
 - (BOOL)initRegistryFile {
   @try {
     // latch path to registry file
-    pathToRegistryFile = [[NSString alloc]
-                          initWithString:RRFSessionPathToRegistryFileKey];
+    pathToRegistryFile = [[[[NSBundle mainBundle] bundlePath]
+                           stringByAppendingPathComponent:
+                           RRFSessionPathToRegistryFileKey] retain];
     // create empty file at path
     if(![[NSFileManager defaultManager]
          createFileAtPath:[self pathToRegistryFile]
@@ -211,6 +217,24 @@ sessionWindow;
   return NO;
 }
 
+- (BOOL)recoverFromCrash {
+  [moveQueue recoverUsingFile:RRFSessionPathToFileMoveQueueKey];
+  // load the regfile
+  [registry release]; // release the old registry
+  registry = [[NSMutableDictionary alloc]
+              initWithContentsOfFile:pathToRegistryFile];
+  // get the last object in history
+  NSString *lastRunComponent = [[registry valueForKey:RRFSessionHistoryKey]
+                                lastObject];
+  DLog(@"Attempting to recover to last run component:%@",lastRunComponent);
+  if([self launchComponentWithID:lastRunComponent]) {
+    return YES;
+  } else { // there was a problem starting the last component
+    ELog(@"Could not recover to last run compnent:%@",lastRunComponent);
+    return NO;
+  }
+}
+
 - (BOOL)run {
 
   // register for notifications from components
@@ -233,25 +257,19 @@ sessionWindow;
   [NSThread detachNewThreadSelector:@selector(spawnMainLogger:) toTarget:[TKLogging class] withObject:nil];
   [NSThread detachNewThreadSelector:@selector(spawnCrashRecoveryLogger:) toTarget:[TKLogging class] withObject:nil];
   DLog(@"Session logs started");
+  // set the data directory
+  dataDirectory = [[NSString alloc]
+                   initWithString:
+                   [[NSString stringWithFormat:@"%@/%@/%@/%@",
+                     RRFSessionDataDirectoryKey,[subject study],
+                     [subject subject_id],[subject session]]
+                    stringByStandardizingPath]];
   // if the regfile still exists at path...
   DLog(@"Checking for regfile at path:%@",pathToRegistryFile);
   if([[NSFileManager defaultManager]
       fileExistsAtPath:pathToRegistryFile]) {
-    // ...try to recover...
-    // load the regfile
-    [registry release]; // release the old registry
-    registry = [[NSMutableDictionary alloc]
-                initWithContentsOfFile:pathToRegistryFile];
-    // get the last object in history
-    NSString *lastRunComponent = [[registry valueForKey:RRFSessionHistoryKey]
-                                  lastObject];
-    DLog(@"Attempting to recover to last run component:%@",lastRunComponent);
-    if([self launchComponentWithID:lastRunComponent]) {
-      return YES;
-    } else { // there was a problem starting the last component
-      ELog(@"Could not recover to last run compnent:%@",lastRunComponent);
-      return NO;
-    }
+    // begin recovery process
+    return [self recoverFromCrash];
   }
   // ...if we've made it here this can be assumed to be a new run
   // initialize the registry file
@@ -274,23 +292,20 @@ sessionWindow;
   // move registry file to data directory
   @try {
    // get target file name
-    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    [formatter setDateFormat:@"yyyy_MM_dd"];
-    NSString *targetName = [NSString stringWithFormat:@"%@_%@_REG_%@.plist",
+    NSString *targetName = [NSString stringWithFormat:@"%@_%@_%@_REG.plist",
                             [subject study],[subject subject_id],
-                            [formatter stringFromDate:[NSDate date]]];
-    // attempt to move the file
+                            [subject session]];
+    // attempt to move the registry file
     DLog(@"Attempting to copy registry file:%@ to dir:%@",
          [pathToRegistryFile stringByStandardizingPath],
-         [[[manifest valueForKey:RRFSessionDataDirectoryKey]
-          stringByAppendingPathComponent:targetName]
+         [[dataDirectory stringByAppendingPathComponent:targetName]
           stringByStandardizingPath]);
     NSError *copyError = nil;
     NSFileManager *fm = [NSFileManager defaultManager];
     [fm copyItemAtPath:[pathToRegistryFile stringByStandardizingPath]
-                toPath:[[[manifest valueForKey:RRFSessionDataDirectoryKey] 
-                        stringByAppendingPathComponent:targetName]
-                        stringByStandardizingPath]
+                toPath:[[dataDirectory 
+                         stringByAppendingPathComponent:targetName]
+                          stringByStandardizingPath]
                  error:&copyError];
     if(copyError) {
       ELog(@"There was a problem moving the registry file: %@",copyError);
@@ -299,6 +314,18 @@ sessionWindow;
            [pathToRegistryFile stringByStandardizingPath]);
       [fm removeItemAtPath:[pathToRegistryFile stringByStandardizingPath]
                      error:nil];
+    }
+    // attempt to move queued files
+    NSError *fileQueueError;
+    NSDictionary *qItem = nil;
+    while(qItem = [moveQueue nextItem]) {
+      [fileQueueError release];fileQueueError=nil; // reset error
+      // move the file
+      [fm moveItemAtPath:[qItem valueForKey:TKFileMoveQueueItemInputKey]
+      toPath:[qItem valueForKey:TKFileMoveQueueItemOutputKey]
+                   error:&fileQueueError];
+      // log error if any
+      if(fileQueueError) ELog(@"%@",fileQueueError);
     }
   }
   @catch (NSException * e) {
@@ -417,7 +444,7 @@ sessionWindow;
  Path to which the registry file should be stored
  */
 - (NSString *)pathToRegistryFile {
-  return [pathToRegistryFile stringByStandardizingPath];
+  return pathToRegistryFile;
 }
 
 /**
@@ -453,6 +480,7 @@ NSString * const RRFSessionHistoryKey = @"history";
 NSString * const RRFSessionRunKey = @"runs";
 
 #pragma mark Environmental Constants
-NSString * const RRFSessionPathToRegistryFileKey = @"~/Desktop/regfile.plist";
+NSString * const RRFSessionPathToRegistryFileKey = @"_TEMP/regfile.plist";
+NSString * const RRFSessionPathToFileMoveQueueKey = @"_TEMP/moveQueue.plist";
 
 @end

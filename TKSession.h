@@ -10,15 +10,19 @@
 
 #import <Cocoa/Cocoa.h>
 #import <TKUtility/TKUtility.h>
+@class TKFileMoveQueue;
 
 @interface TKSession : NSObject {
   NSDictionary *components;             // the block of components currently
                                         // loaded  
   NSString *currentComponentID;         // the ID of the current component (in
                                         // this case current ranges from about
-                                        // to be launched to componentDidFinish)    
+                                        // to be launched to componentDidFinish)
+  NSString *dataDirectory;              // path to data directory to use for
+                                        // this session
   NSDictionary *manifest;               // the manifest, or definition for
                                         // the currently loaded session
+  TKFileMoveQueue *moveQueue;           // queue of files to be moved
   NSString *pathToRegistryFile;         // path to registry file
   NSMutableDictionary *registry;        // information pertaining to the current
                                         // session... this includes information
@@ -39,7 +43,9 @@
 }
 
 @property(readonly) NSDictionary *components;
+@property(readonly) NSString *dataDirectory;
 @property(readonly) NSDictionary *manifest;
+@property(readonly) TKFileMoveQueue *moveQueue;
 @property(readonly) NSString *pathToRegistryFile;
 @property(nonatomic, retain) TKComponentController *compObj;
 @property(nonatomic, retain) TKSubject *subject;
@@ -59,6 +65,7 @@
 - (BOOL)launchComponentWithID: (NSString *)componentID;
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile;
 - (BOOL)passedPreflightCheck: (NSString **)errorString;
+- (BOOL)recoverFromCrash;
 - (BOOL)run;
 - (void)tearDown;
 
@@ -132,5 +139,6 @@ NSString * const RRFSessionRunKey;
 
 #pragma mark Environmental Constants
 NSString * const RRFSessionPathToRegistryFileKey;
+NSString * const RRFSessionPathToFileMoveQueueKey;
 
 @end 
