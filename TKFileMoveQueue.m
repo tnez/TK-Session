@@ -41,7 +41,9 @@
   NSDictionary *item = nil;
   @try {
     // otherwise, grab the item at the front of the line
-    [[NSDictionary alloc] initWithDictionary: [queue objectAtIndex:0]];
+    item = [[NSDictionary alloc] initWithDictionary: [queue objectAtIndex:0]];
+    // and remove the grabbed item
+    [queue removeObjectAtIndex:0];
   }
   @catch (NSException *e) {
     ELog(@"%@",e); // log any exceptions
@@ -68,7 +70,13 @@
     ELog(@"%@",e); // log exception
     didFail = YES; // raise fail flag
   }
-  return !didFail; // return indication of success
+  if(didFail) {
+    return NO;
+  } else {
+    DLog(@"Queued File: %@ forPath: %@",fullInputPath,fullOutputPath);
+    [self queueDidChange];
+    return YES;
+  }
 }
 
 - (void)recoverUsingFile: (NSString *)fullPathToFile {
@@ -83,11 +91,11 @@
 
 - (void)tearDown {
   // remove the queue from disk
-  NSError *error;
+  NSError *error=nil;
   [[NSFileManager defaultManager] removeItemAtPath:pathToFile
                                              error:&error];
   if(error) {
-    ELog(@"%@",error);
+    ELog(@"Error removing queue file:%@",[error localizedDescription]);
   }
 }
 

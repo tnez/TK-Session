@@ -39,8 +39,11 @@ compObj,subject,sessionWindow;
 
 - (id)init {
   if([super init]) {
-    // create our registry file
+    // create our registry
     registry = [[NSMutableDictionary alloc] initWithCapacity:3];
+    pathToRegistryFile = [[[[NSBundle mainBundle] bundlePath]
+                           stringByAppendingPathComponent:
+                           RRFSessionPathToRegistryFileKey] retain];
     // top level objects of registry
     // {dict:session,dict:components,array:history}
     // create our move queue... used by external apps to queue data files
@@ -257,13 +260,21 @@ compObj,subject,sessionWindow;
   [NSThread detachNewThreadSelector:@selector(spawnMainLogger:) toTarget:[TKLogging class] withObject:nil];
   [NSThread detachNewThreadSelector:@selector(spawnCrashRecoveryLogger:) toTarget:[TKLogging class] withObject:nil];
   DLog(@"Session logs started");
-  // set the data directory
-  dataDirectory = [[NSString alloc]
-                   initWithString:
+  // setup the data directory -- record path
+  dataDirectory = [[NSString alloc] initWithString:
                    [[NSString stringWithFormat:@"%@/%@/%@/%@",
-                     RRFSessionDataDirectoryKey,[subject study],
-                     [subject subject_id],[subject session]]
+                     [manifest valueForKey:RRFSessionDataDirectoryKey],
+                     [subject study],[subject subject_id],[subject session]]
                     stringByStandardizingPath]];
+  // setup the data directory -- create the directory on disk
+  NSError *dataDirError;
+  if(![[NSFileManager defaultManager] createDirectoryAtPath:dataDirectory
+                                withIntermediateDirectories:YES
+                                                 attributes:nil
+                                                      error:&dataDirError]) {
+    // if there was an error creating the dir, log it
+    ELog(@"%@",dataDirError);
+  }
   // if the regfile still exists at path...
   DLog(@"Checking for regfile at path:%@",pathToRegistryFile);
   if([[NSFileManager defaultManager]
@@ -321,12 +332,17 @@ compObj,subject,sessionWindow;
     while(qItem = [moveQueue nextItem]) {
       [fileQueueError release];fileQueueError=nil; // reset error
       // move the file
+      DLog(@"Attempting to move: %@ to: %@",
+           [qItem valueForKey:TKFileMoveQueueItemInputKey],
+           [qItem valueForKey:TKFileMoveQueueItemOutputKey]);
       [fm moveItemAtPath:[qItem valueForKey:TKFileMoveQueueItemInputKey]
       toPath:[qItem valueForKey:TKFileMoveQueueItemOutputKey]
                    error:&fileQueueError];
       // log error if any
       if(fileQueueError) ELog(@"%@",fileQueueError);
     }
+    // tear down the move queue
+    [moveQueue tearDown];
   }
   @catch (NSException * e) {
     ELog(@"%@",e);
