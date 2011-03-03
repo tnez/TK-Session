@@ -2,15 +2,15 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9L31a</string>
-		<string key="IBDocument.InterfaceBuilderVersion">677</string>
+		<string key="IBDocument.SystemVersion">9L30</string>
+		<string key="IBDocument.InterfaceBuilderVersion">680</string>
 		<string key="IBDocument.AppKitVersion">949.54</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<integer value="372"/>
-			<integer value="57"/>
 			<integer value="548"/>
+			<integer value="57"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1209,7 +1209,7 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="1070247513">
-								<int key="NSCellFlags">-1804468671</int>
+								<int key="NSCellFlags">-1803944383</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="338849919"/>
@@ -1335,7 +1335,7 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="928437225">
-								<int key="NSCellFlags">-1804468671</int>
+								<int key="NSCellFlags">-1803944383</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="338849919"/>
@@ -1352,7 +1352,7 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="482972924">
-								<int key="NSCellFlags">-1804468671</int>
+								<int key="NSCellFlags">-1803944383</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="338849919"/>
@@ -1369,7 +1369,7 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="1047095480">
-								<int key="NSCellFlags">-1804468671</int>
+								<int key="NSCellFlags">-1803944383</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="338849919"/>
@@ -1386,7 +1386,7 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="17511023">
-								<int key="NSCellFlags">-1804468671</int>
+								<int key="NSCellFlags">-1803944383</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="338849919"/>
@@ -1403,7 +1403,7 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="487612963">
-								<int key="NSCellFlags">-1804468671</int>
+								<int key="NSCellFlags">-1803944383</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="338849919"/>
@@ -1420,7 +1420,7 @@
 							<reference key="NSSuperview" ref="439893737"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="372315628">
-								<int key="NSCellFlags">-1804468671</int>
+								<int key="NSCellFlags">-1803944383</int>
 								<int key="NSCellFlags2">272630784</int>
 								<string key="NSContents"/>
 								<reference key="NSSupport" ref="338849919"/>
@@ -2005,118 +2005,6 @@
 					<int key="connectionID">520</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: study</string>
-						<reference key="source" ref="457603695"/>
-						<reference key="destination" ref="815683322"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="457603695"/>
-							<reference key="NSDestination" ref="815683322"/>
-							<string key="NSLabel">value: study</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">study</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">522</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: subject_id</string>
-						<reference key="source" ref="685955807"/>
-						<reference key="destination" ref="815683322"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="685955807"/>
-							<reference key="NSDestination" ref="815683322"/>
-							<string key="NSLabel">value: subject_id</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">subject_id</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">524</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: session</string>
-						<reference key="source" ref="27582330"/>
-						<reference key="destination" ref="815683322"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="27582330"/>
-							<reference key="NSDestination" ref="815683322"/>
-							<string key="NSLabel">value: session</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">session</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">526</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: drugDose</string>
-						<reference key="source" ref="475433720"/>
-						<reference key="destination" ref="815683322"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="475433720"/>
-							<reference key="NSDestination" ref="815683322"/>
-							<string key="NSLabel">value: drugDose</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">drugDose</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">528</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: drugLevel</string>
-						<reference key="source" ref="723212054"/>
-						<reference key="destination" ref="815683322"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="723212054"/>
-							<reference key="NSDestination" ref="815683322"/>
-							<string key="NSLabel">value: drugLevel</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">drugLevel</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">530</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: drugCode</string>
-						<reference key="source" ref="898901136"/>
-						<reference key="destination" ref="815683322"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="898901136"/>
-							<reference key="NSDestination" ref="815683322"/>
-							<string key="NSLabel">value: drugCode</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">drugCode</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">532</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: drug</string>
-						<reference key="source" ref="350546408"/>
-						<reference key="destination" ref="815683322"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="350546408"/>
-							<reference key="NSDestination" ref="815683322"/>
-							<string key="NSLabel">value: drug</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">drug</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">534</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">setupWindow</string>
 						<reference key="source" ref="166481973"/>
@@ -2227,6 +2115,146 @@
 						<reference key="destination" ref="423277975"/>
 					</object>
 					<int key="connectionID">550</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: study</string>
+						<reference key="source" ref="457603695"/>
+						<reference key="destination" ref="815683322"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="457603695"/>
+							<reference key="NSDestination" ref="815683322"/>
+							<string key="NSLabel">value: study</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">study</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSContinuouslyUpdatesValue</string>
+								<boolean value="YES" key="NS.object.0" id="5"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">551</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: subject_id</string>
+						<reference key="source" ref="685955807"/>
+						<reference key="destination" ref="815683322"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="685955807"/>
+							<reference key="NSDestination" ref="815683322"/>
+							<string key="NSLabel">value: subject_id</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">subject_id</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSContinuouslyUpdatesValue</string>
+								<reference key="NS.object.0" ref="5"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">552</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: session</string>
+						<reference key="source" ref="27582330"/>
+						<reference key="destination" ref="815683322"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="27582330"/>
+							<reference key="NSDestination" ref="815683322"/>
+							<string key="NSLabel">value: session</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">session</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSContinuouslyUpdatesValue</string>
+								<reference key="NS.object.0" ref="5"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">553</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: drugDose</string>
+						<reference key="source" ref="475433720"/>
+						<reference key="destination" ref="815683322"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="475433720"/>
+							<reference key="NSDestination" ref="815683322"/>
+							<string key="NSLabel">value: drugDose</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">drugDose</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSContinuouslyUpdatesValue</string>
+								<reference key="NS.object.0" ref="5"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">554</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: drugLevel</string>
+						<reference key="source" ref="723212054"/>
+						<reference key="destination" ref="815683322"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="723212054"/>
+							<reference key="NSDestination" ref="815683322"/>
+							<string key="NSLabel">value: drugLevel</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">drugLevel</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSContinuouslyUpdatesValue</string>
+								<reference key="NS.object.0" ref="5"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">555</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: drugCode</string>
+						<reference key="source" ref="898901136"/>
+						<reference key="destination" ref="815683322"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="898901136"/>
+							<reference key="NSDestination" ref="815683322"/>
+							<string key="NSLabel">value: drugCode</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">drugCode</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSContinuouslyUpdatesValue</string>
+								<reference key="NS.object.0" ref="5"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">556</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: drug</string>
+						<reference key="source" ref="350546408"/>
+						<reference key="destination" ref="815683322"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="350546408"/>
+							<reference key="NSDestination" ref="815683322"/>
+							<string key="NSLabel">value: drug</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">drug</string>
+							<object class="NSDictionary" key="NSOptions">
+								<string key="NS.key.0">NSContinuouslyUpdatesValue</string>
+								<reference key="NS.object.0" ref="5"/>
+							</object>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">557</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -3940,7 +3968,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">550</int>
+			<int key="maxID">557</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">

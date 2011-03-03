@@ -239,7 +239,14 @@ compObj,subject,sessionWindow;
 }
 
 - (BOOL)run {
-
+  DLog(@"Getting ready to run w/ the following information...");
+  DLog(@"Study: %@",[subject study]);
+  DLog(@"Subject: %@",[subject subject_id]);
+  DLog(@"Session: %@",[subject session]);
+  DLog(@"Dose: %@",[subject drugDose]);
+  DLog(@"Level: %@",[subject drugLevel]);
+  DLog(@"Code: %@",[subject drugCode]);
+  DLog(@"Drug: %@",[subject drug]);
   // register for notifications from components
   NSNotificationCenter *postOffice = [NSNotificationCenter defaultCenter];
   [postOffice addObserver:self
