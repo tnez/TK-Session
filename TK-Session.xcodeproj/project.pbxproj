@@ -11,31 +11,15 @@
 		4000D37912EF31110032E9B0 /* TKFileMoveQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4000D37812EF31110032E9B0 /* TKFileMoveQueue.m */; };
 		400928C512DF917F00392AD5 /* TKUtility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 400928C412DF917F00392AD5 /* TKUtility.framework */; };
 		400928CA12DF91C500392AD5 /* TKUtility.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 400928C412DF917F00392AD5 /* TKUtility.framework */; };
-		4040C78912D4DE540092DD7A /* ComRrfComponentVas.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75212D4DDF10092DD7A /* ComRrfComponentVas.bundle */; };
-		4040C79312D4DE620092DD7A /* RRFARS.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75612D4DDFC0092DD7A /* RRFARS.bundle */; };
-		4040C79912D4DE6A0092DD7A /* RRFClickReady.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C75A12D4DE060092DD7A /* RRFClickReady.bundle */; };
-		4040C79A12D4DE700092DD7A /* RRFNBack.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C77F12D4DE340092DD7A /* RRFNBack.bundle */; };
-		4040C79B12D4DE790092DD7A /* RRFPause.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4040C78512D4DE4A0092DD7A /* RRFPause.bundle */; };
 		404DF3A91279EC34000D1CC4 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 404DF3A41279EC34000D1CC4 /* TKSession.m */; };
 		404DF3AD1279EC45000D1CC4 /* version.plist in Resources */ = {isa = PBXBuildFile; fileRef = 404DF3AC1279EC45000D1CC4 /* version.plist */; };
 		4079CA8B12D0DD1F009B23AC /* TKSessionAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4079CA8A12D0DD1F009B23AC /* TKSessionAppDelegate.m */; };
-		40D07E1F12D3B70500ACF2CC /* RRFLoop.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40D07E1E12D3B70500ACF2CC /* RRFLoop.bundle */; };
-		40D07E3A12D3B77800ACF2CC /* RRFAlarm.bundle in CopyFiles */ = {isa = PBXBuildFile; fileRef = 40D07E3912D3B77800ACF2CC /* RRFAlarm.bundle */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		401205B012D54E1200329BE2 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 1;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		40352BA112CA404B0071EECA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -43,22 +27,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				400928CA12DF91C500392AD5 /* TKUtility.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		40D07E1812D3B6B900ACF2CC /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				4040C78912D4DE540092DD7A /* ComRrfComponentVas.bundle in CopyFiles */,
-				40D07E3A12D3B77800ACF2CC /* RRFAlarm.bundle in CopyFiles */,
-				4040C79312D4DE620092DD7A /* RRFARS.bundle in CopyFiles */,
-				4040C79912D4DE6A0092DD7A /* RRFClickReady.bundle in CopyFiles */,
-				40D07E1F12D3B70500ACF2CC /* RRFLoop.bundle in CopyFiles */,
-				4040C79A12D4DE700092DD7A /* RRFNBack.bundle in CopyFiles */,
-				4040C79B12D4DE790092DD7A /* RRFPause.bundle in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,8 +180,8 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				40352BA112CA404B0071EECA /* CopyFiles */,
-				40D07E1812D3B6B900ACF2CC /* CopyFiles */,
-				401205B012D54E1200329BE2 /* CopyFiles */,
+				40D5EE5D133932700009FD87 /* Bundles --> Plugins */,
+				40AA82A5134230CC008280E3 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -254,6 +222,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		40AA82A5134230CC008280E3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/usr/bin/perl -w";
+			shellScript = "# Xcode auto-versioning script for Subversion by Axel Andersson\n# Updated for git by Marcus S. Zarra and Matt Long\n \nuse strict;\n \n# Get the current git commit hash and use it to set the CFBundleVersion value\nmy $REV = `/usr/local/git/bin/git describe --long`;\nmy $INFO = \"$ENV{BUILT_PRODUCTS_DIR}/$ENV{WRAPPER_NAME}/Contents/Info.plist\";\n \nif(!$REV) {\n\tdie \"No Git revision found\";\n}\n \nopen(FH, \"$INFO\") or die \"$0: $INFO: $!\";\nmy $info = join(\"\", <FH>);\nclose(FH);\n \n$info =~ s/([\\t ]+<key>CFBundleVersion<\\/key>\\n[\\t ]+<string>).*?(<\\/string>)/$1$REV$2/;\n \nopen(FH, \">$INFO\") or die \"$0: $INFO: $!\";\nprint FH $info;\nclose(FH);";
+		};
+		40D5EE5D133932700009FD87 /* Bundles --> Plugins */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundles --> Plugins";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir ${TARGET_BUILD_DIR}/TK-Session.app/Contents/Plugins\ncp -r ~/Documents/development/rrf/PLUGINS/* ${TARGET_BUILD_DIR}/TK-Session.app/Contents/Plugins";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
