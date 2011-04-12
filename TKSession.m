@@ -10,9 +10,10 @@
 
 #import "TKSession.h"
 #import "TKFileMoveQueue.h"
+#import "TKRegistry.h"
 
 @implementation TKSession
-@synthesize components,dataDirectory,manifest,moveQueue,pathToRegistryFile,
+@synthesize components,currentComponentID,dataDirectory,manifest,moveQueue,
 compObj,subject,sessionWindow;
 
 #pragma mark Housekeeping
@@ -30,7 +31,6 @@ compObj,subject,sessionWindow;
   [moveQueue release];moveQueue=nil;
   [registry release];registry=nil;
   [components release];components=nil;
-  [pathToRegistryFile release];pathToRegistryFile=nil;
   [compObj release];compObj=nil;
   [subject release];subject=nil;
   // nothing for now
@@ -39,11 +39,6 @@ compObj,subject,sessionWindow;
 
 - (id)init {
   if([super init]) {
-    // create our registry
-    registry = [[NSMutableDictionary alloc] initWithCapacity:3];
-    pathToRegistryFile = [[[[NSBundle mainBundle] bundlePath]
-                           stringByAppendingPathComponent:
-                           RRFSessionPathToRegistryFileKey] retain];
     // top level objects of registry
     // {dict:session,dict:components,array:history}
     // create our move queue... used by external apps to queue data files
@@ -85,20 +80,9 @@ compObj,subject,sessionWindow;
 
 - (BOOL)initRegistryFile {
   @try {
-    // latch path to registry file
-    pathToRegistryFile = [[[[NSBundle mainBundle] bundlePath]
-                           stringByAppendingPathComponent:
-                           RRFSessionPathToRegistryFileKey] retain];
-    // create empty file at path
-    if(![[NSFileManager defaultManager]
-         createFileAtPath:[self pathToRegistryFile]
-         contents:nil attributes:nil]) {
-      ELog(@"Could not create empty registry file on disk: %@",
-           [self pathToRegistryFile]);
-      return NO;
-    }
-    // create registry in memory
-    registry = [[NSMutableDictionary alloc] init];
+    // create
+    registry = [[TKRegistry alloc] initWithPath:[TKRegistry temporaryPath]];
+    [registry setSession:self];
     // load global session info
     [registry setValue:[subject study] forKey:RRFSessionProtocolKey];
     [registry setValue:[subject subject_id] forKey:RRFSessionSubjectKey];
@@ -128,7 +112,6 @@ compObj,subject,sessionWindow;
     } // end for loop
     DLog(@"Created entries for all components in registry");
     // we have succeeded (presumably) :}
-    [self registryDidChange];    
     return YES;
   } // end of try block
   @catch (NSException * e) {
@@ -223,9 +206,8 @@ compObj,subject,sessionWindow;
 - (BOOL)recoverFromCrash {
   [moveQueue recoverUsingFile:RRFSessionPathToFileMoveQueueKey];
   // load the regfile
-  [registry release]; // release the old registry
-  registry = [[NSMutableDictionary alloc]
-              initWithContentsOfFile:pathToRegistryFile];
+  [registry release]; // release the old registry (if any)
+  registry = [[TKRegistry alloc] initWithContentsOfFile:[TKRegistry temporaryPath]];
   // get the last object in history
   NSString *lastRunComponent = [[registry valueForKey:RRFSessionHistoryKey]
                                 lastObject];
@@ -283,9 +265,8 @@ compObj,subject,sessionWindow;
     ELog(@"%@",dataDirError);
   }
   // if the regfile still exists at path...
-  DLog(@"Checking for regfile at path:%@",pathToRegistryFile);
-  if([[NSFileManager defaultManager]
-      fileExistsAtPath:pathToRegistryFile]) {
+  DLog(@"Checking for regfile at path:%@",[TKRegistry temporaryPath]);
+  if([[NSFileManager defaultManager] fileExistsAtPath:[TKRegistry temporaryPath]]) {
     // begin recovery process
     return [self recoverFromCrash];
   }
@@ -307,33 +288,16 @@ compObj,subject,sessionWindow;
 }
 
 - (void)tearDown {
-  // move registry file to data directory
   @try {
    // get target file name
     NSString *targetName = [NSString stringWithFormat:@"%@_%@_%@_REG.plist",
                             [subject study],[subject subject_id],
                             [subject session]];
-    // attempt to move the registry file
-    DLog(@"Attempting to copy registry file:%@ to dir:%@",
-         [pathToRegistryFile stringByStandardizingPath],
-         [[dataDirectory stringByAppendingPathComponent:targetName]
-          stringByStandardizingPath]);
-    NSError *copyError = nil;
-    NSFileManager *fm = [NSFileManager defaultManager];
-    [fm copyItemAtPath:[pathToRegistryFile stringByStandardizingPath]
-                toPath:[[dataDirectory 
-                         stringByAppendingPathComponent:targetName]
-                          stringByStandardizingPath]
-                 error:&copyError];
-    if(copyError) {
-      ELog(@"There was a problem moving the registry file: %@",copyError);
-    } else { // copy was successful
-      DLog(@"Attempting to delete registry file:%@",
-           [pathToRegistryFile stringByStandardizingPath]);
-      [fm removeItemAtPath:[pathToRegistryFile stringByStandardizingPath]
-                     error:nil];
-    }
+    // get full path
+    NSString *fullRegPath = [[dataDirectory stringByAppendingPathComponent:targetName] stringByStandardizingPath];
+    [registry moveToPath:fullRegPath];
     // attempt to move queued files
+    NSFileManager *fm = [NSFileManager defaultManager];
     NSError *fileQueueError;
     NSDictionary *qItem = nil;
     while(qItem = [moveQueue nextItem]) {
@@ -362,124 +326,27 @@ compObj,subject,sessionWindow;
 
 #pragma mark Registry Accessors
 - (NSDictionary *)registryForTask: (NSString *)taskID {
-  NSDictionary * retValue = nil;
-  @try {
-    retValue = [[NSDictionary dictionaryWithDictionary:
-                 [[registry valueForKey:RRFSessionComponentsKey]
-                  valueForKey:taskID]] retain];
-  }
-  @catch (NSException * e) {
-    ELog(@"Could not find task with ID: %@",taskID);
-  }
-  @finally {
-    return [retValue autorelease];
-  }
+  return [registry registryForTask:taskID];
 }
 
 - (NSDictionary *)registryForLastTask {
-  // get the ID of the last completed task from the history
-  // in the registry... the history is an array of number objects
-  // representing succession of task ID's through time
-  return [self registryForTaskWithOffset:-1];
+  return [registry registryForLastTask];
 }
 
 - (NSDictionary *)registryForTaskWithOffset: (NSInteger)offset {
-  NSDictionary *retValue = nil;
-  @try {
-    // determine ID of the task using offset
-    NSInteger targetIdx;
-    NSArray *history = [NSArray arrayWithArray:
-                        [registry valueForKey:RRFSessionHistoryKey]];
-    // if offset is positive... implication is that we are offsetting
-    // from the begginging...
-    if(offset>0) {
-      // ...this will be index in the array minus 1
-      targetIdx = offset - 1;
-    } else {
-      // we were given a non-positive offset which implies
-      // that we should offset from our current point
-      // this is equivalent to the index of the last item in history
-      // minus our offset (which may be zero representing the current task)
-      targetIdx = [history count] - 1 + offset;
-    }
-    // we then need the registry for the task with id equal to the
-    // value we find in our target index
-    NSString *targetID = [history objectAtIndex:targetIdx];
-    retValue = [self registryForTask:targetID];
-  }
-  @catch (NSException * e) {
-    ELog(@"Could not find task with offset: %d Exception: %@",offset,e);
-  }
-  @finally {
-    return [retValue autorelease];
-  }
+  return [registry registryForTaskWithOffset:offset];
 }
 
 #pragma mark Registry Setters
 - (void)setValue: (id)newValue forRegistryKey: (NSString *)key {
-  @try {
-    DLog(@"value: %@ forKey: %@",newValue,key);
-    // get reference to current task...
-    NSMutableDictionary *currentTask = 
-    [[registry objectForKey:RRFSessionComponentsKey]
-     objectForKey:currentComponentID];
-    // set value for said dictionary
-    [currentTask setValue:newValue forKey:key];
-    // we did change
-    [self registryDidChange];
-  }
-  @catch (NSException * e) {
-    ELog(@"Could not set value for run registry key: %@ due to exception: %@",
-         key,e);
-  }
+  [registry setValue:newValue forRegistryKey:key];
 }
 
 - (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key {
-  @try {
-    DLog(@"value: %@ forKey: %@",newValue,key);
-    // get reference to current run of current task...
-    NSMutableDictionary* currentRun = 
-      [[registry valueForKeyPath:
-        [NSString stringWithFormat:
-         @"%@.%@.%@",RRFSessionComponentsKey,currentComponentID,
-         RRFSessionRunKey]] lastObject];
-    // set value for said dictionary
-    [currentRun setValue:newValue forKey:key];
-    // we did change
-    [self registryDidChange];
-  }
-  @catch (NSException * e) {
-    ELog(@"Could not set value for run registry key: %@ due to exception: %@",
-         key,e);
-  }
+  [registry setValue:newValue forRunRegistryKey:key];
 }
 
-#pragma mark Registry Maintenence
-/**
- Write the registry file to disk
- Returns YES if successful
- */
-- (BOOL)bounceRegistryToDisk {
-  return [registry writeToFile:[self pathToRegistryFile] atomically:YES];
-}
-
-/**
- Path to which the registry file should be stored
- */
-- (NSString *)pathToRegistryFile {
-  return pathToRegistryFile;
-}
-
-/**
- This method should be called whenever we have made a change to the registry
- in memory
- */
-- (void)registryDidChange {
-  DLog(@"Writing registry to disk");
-  if(![self bounceRegistryToDisk]) {
-    ELog(@"Unable to write the registry to disk");
-  }
-}
+@end
 
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey = @"protocol";
@@ -503,7 +370,5 @@ NSString * const RRFSessionHistoryKey = @"history";
 NSString * const RRFSessionRunKey = @"runs";
 
 #pragma mark Environmental Constants
-NSString * const RRFSessionPathToRegistryFileKey = @"_TEMP/regfile.plist";
 NSString * const RRFSessionPathToFileMoveQueueKey = @"_TEMP/moveQueue.plist";
 
-@end

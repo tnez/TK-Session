@@ -11,6 +11,7 @@
 #import <Cocoa/Cocoa.h>
 #import <TKUtility/TKUtility.h>
 @class TKFileMoveQueue;
+@class TKRegistry;
 
 @interface TKSession : NSObject {
   NSDictionary *components;             // the block of components currently
@@ -23,8 +24,7 @@
   NSDictionary *manifest;               // the manifest, or definition for
                                         // the currently loaded session
   TKFileMoveQueue *moveQueue;           // queue of files to be moved
-  NSString *pathToRegistryFile;         // path to registry file
-  NSMutableDictionary *registry;        // information pertaining to the current
+  TKRegistry *registry;                 // information pertaining to the current
                                         // session... this includes information
                                         // parsed into runs for each component
                                         // as well as a history representing
@@ -43,10 +43,10 @@
 }
 
 @property(readonly) NSDictionary *components;
+@property(readonly) NSString *currentComponentID;
 @property(readonly) NSString *dataDirectory;
 @property(readonly) NSDictionary *manifest;
 @property(readonly) TKFileMoveQueue *moveQueue;
-@property(readonly) NSString *pathToRegistryFile;
 @property(nonatomic, retain) TKComponentController *compObj;
 @property(nonatomic, retain) TKSubject *subject;
 @property(assign) NSWindow *sessionWindow;
@@ -100,21 +100,7 @@
  */
 - (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key;
 
-#pragma mark Registry Maintenance
-/**
- Write the registry file to disk
- Returns YES if successful
- */
-- (BOOL)bounceRegistryToDisk;
-/**
- Returns the path to where the registry file will be stored
- */
-- (NSString *)pathToRegistryFile;
-/**
- This method should be called whenever we have made a change to the registry
- in memory
- */
-- (void)registryDidChange;
+@end 
 
 #pragma mark Preference Keys
 NSString * const RRFSessionProtocolKey;
@@ -138,7 +124,4 @@ NSString * const RRFSessionHistoryKey;
 NSString * const RRFSessionRunKey;
 
 #pragma mark Environmental Constants
-NSString * const RRFSessionPathToRegistryFileKey;
 NSString * const RRFSessionPathToFileMoveQueueKey;
-
-@end 
