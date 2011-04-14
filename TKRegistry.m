@@ -45,7 +45,8 @@
   {
     data = [[NSMutableDictionary alloc] initWithContentsOfFile:_fullPathToFile];
     writePath = [[NSString alloc] initWithString:_fullPathToFile];
-    [NSThread detachNewThreadSelector:@selector(bouceRegistryToDisk:) toTarget:self withObject:nil];
+    [NSThread detachNewThreadSelector:@selector(bounceRegistryToDisk:) toTarget:self withObject:nil];
+    DLog(@"I have recovered this registry file: %@",data);
     return self;
   }
   ELog(@"Could not create registry instance");
@@ -64,7 +65,7 @@
       return nil;
     }
     DLog(@"Launching bounce thread from thread: %@",[NSThread currentThread]);
-    [NSThread detachNewThreadSelector:@selector(bouceRegistryToDisk:) toTarget:self withObject:nil];    
+    [NSThread detachNewThreadSelector:@selector(bounceRegistryToDisk:) toTarget:self withObject:nil];    
     return self;
   }
   ELog(@"Could not create registry instance");
@@ -79,7 +80,7 @@
 
 - (NSDictionary *)registryForTask: (NSString *)taskID {
   NSDictionary * retValue = nil;  
-  @synchronized(self) {
+  @synchronized(data) {
     @try {
       retValue = [NSDictionary dictionaryWithDictionary:
                   [[self valueForKey:RRFSessionComponentsKey] valueForKey:taskID]];
@@ -100,7 +101,7 @@
 
 - (NSDictionary *)registryForTaskWithOffset: (NSInteger)offset {
   NSDictionary *retValue = nil;  
-  @synchronized(self) {
+  @synchronized(data) {
     @try {
       // determine ID of the task using offset
       NSInteger targetIdx;
@@ -145,10 +146,79 @@
   return nil;
 }
 
+- (id)valueForKeyPath: (NSString *)keyPath
+{
+  if(keyPath)
+  {
+    return [data valueForKeyPath:keyPath];
+  }
+  // key was nil
+  ELog(@"No key-path was provided");
+  return nil;
+}
+
 #pragma mark Setters
+- (void)addEntryToHistory: (NSString *)componentID {
+
+  // make sure we have a string to add
+  if(!componentID) {
+    ELog(@"Tried to add nil to history");
+    return;
+  }
+
+  // add the string
+  @synchronized(data) {
+    NSMutableArray *history = [data valueForKey:RRFRegistryHistoryKey];
+    [history addObject:componentID];
+    [data setValue:history forKey:RRFRegistryHistoryKey];
+    [self setIsDirty:YES];    
+    DLog(@"Just added %@ to history",componentID);
+  }
+}
+
+- (void)addRunEntryToComponent: (NSString *)componentID {
+
+  // initialize a dictionary to add to the run stack
+  NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSDate date],RRFRegistryComponentStartKey,nil];
+
+  @synchronized(data) {
+    // get the run stack for this component
+    NSString *runKeyPath = [NSString stringWithFormat:@"%@.%@.%@",RRFRegistryComponentsKey,componentID,RRFRegistryRunKey];
+    NSMutableArray *runs = [data valueForKeyPath:runKeyPath];
+
+    if(runs && dict) {
+      [runs addObject:dict];
+      [data setValue:runs forKeyPath:runKeyPath];
+      [self setIsDirty:YES];
+      DLog(@"Just added %@ to run stack of %@",dict,componentID);
+    } else ELog(@"Could not add run entry for %@",componentID);
+  } // end synchronized
+}
+
+- (void)initializeRegistryForComponentRun: (NSString *)componentID {
+
+  // get some preliminary values for investigation
+  NSString *runKeyPath = [NSString stringWithFormat:@"%@.%@.%@",RRFRegistryComponentsKey,componentID,RRFRegistryRunKey];
+  NSMutableArray *runs = [data valueForKeyPath:runKeyPath];
+
+  if(!runs) { // if we found no run stack for the component...
+    ELog(@"Could not get run stack for %@",componentID);
+    return;
+  }
+  // otherwise, we have a run stack...
+  // if that stack has either a count of zero or a valid end stamp on the last
+  // entry, then we should create new entries in run and history stacks
+  if([runs count]==0 || [[runs lastObject] valueForKey:RRFRegistryComponentEndKey]) {
+    // add entry to component history
+    [self addEntryToHistory:componentID];
+    // create a new run entry for the current task
+    [self addRunEntryToComponent:componentID];
+  }
+}
+    
 - (void)setValue: (id)anObj forKey: (NSString *)aKey
 {
-  @synchronized(self)
+  @synchronized(data)
   {
     [data setValue:anObj forKey:aKey];
     [self setIsDirty:YES];
@@ -157,14 +227,16 @@
 }
 
 - (void)setValue: (id)newValue forRegistryKey: (NSString *)key {
-  @synchronized(self) {
+  @synchronized(data) {
     @try {
       DLog(@"value: %@ forKey: %@",newValue,key);
       // get reference to current task...
-      NSMutableDictionary *currentTask = 
-      [[data objectForKey:RRFSessionComponentsKey] objectForKey:[session currentComponentID]];
-      // set value for said dictionary
+      NSString *keyPath = [NSString stringWithFormat:@"%@.%@",RRFRegistryComponentsKey,[session currentComponentID]];
+      NSMutableDictionary *currentTask = [NSMutableDictionary dictionaryWithDictionary:[data valueForKeyPath:keyPath]];
+      // set value for our temp mutable dictionary
       [currentTask setValue:newValue forKey:key];
+      // write our value back to data
+      [data setValue:currentTask forKey:keyPath];
       // we're dirty now
       [self setIsDirty:YES];
     }
@@ -176,15 +248,20 @@
 }
 
 - (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key {
-  @synchronized(self) {
+  @synchronized(data) {
     @try {
       DLog(@"value: %@ forKey: %@",newValue,key);
-      // get reference to current run of current task...
-      NSMutableDictionary* currentRun = 
-      [[self valueForKeyPath:
-        [NSString stringWithFormat:@"%@.%@.%@",RRFSessionComponentsKey,[session currentComponentID],RRFSessionRunKey]] lastObject];
+      // grab our key path
+      NSString *keyPath = [NSString stringWithFormat:@"%@.%@.%@",RRFRegistryComponentsKey,[session currentComponentID],RRFRegistryRunKey];
+      // get run stack
+      NSMutableArray *runStack = [NSMutableArray arrayWithArray:[data valueForKeyPath:keyPath]];
+      DLog(@"This is the run stack I'm working with: %@",runStack);
+      // get current run dictionary
+      NSMutableDictionary *currentRun = [NSMutableDictionary dictionaryWithDictionary:[runStack lastObject]];
       // set value for said dictionary
       [currentRun setValue:newValue forKey:key];
+      // put current run back in run stack
+      [runStack replaceObjectAtIndex:[runStack count]-1 withObject:currentRun];
       // we're dirty now
       [self setIsDirty:YES];
     }
@@ -215,7 +292,6 @@
     // wait for a polling interval
     [NSThread sleepForTimeInterval:2.0];
   }
-  // now we can safely stop write thread
   [self setStop:YES];
   // try to move the file
   NSError *moveError = nil;
@@ -229,30 +305,35 @@
 }
 
 #pragma mark Internal Methods
-- (NSTimer *)bouceRegistryToDisk: (id)arg
+- (void)bounceRegistryToDisk: (id)anArg
 {
-  NSAutoreleasePool *aPool = [[NSAutoreleasePool alloc] init];
-  DLog(@"Spawned bounce thread: %@",[NSThread currentThread]);
-  struct timespec ts;
-  ts.tv_sec = writeInterval/1000;
-  @synchronized(self)
-  {
-    while(!stop) {
-      if(isDirty) {
+
+  NSAutoreleasePool *myPool = [[NSAutoreleasePool alloc] init];
+  NSUInteger loopCounter = 0;
+  float sleepForValue = (double)writeInterval/(double)1000.0;
+  DLog(@"Main Thread: %@ This Thread: %@",[NSThread mainThread],[NSThread currentThread]);
+  do {
+    loopCounter++;
+    if(isDirty) {
+      @synchronized(data) {
         if([data writeToFile:writePath atomically:YES]) {
           [self setIsDirty:NO];
         } else {
           ELog(@"Could not write registry to disk!");
         }
-      } // end of durtydurty
-      DLog(@"Preparing to sleep for %d seconds",ts.tv_sec);
-      nanosleep(&ts, NULL);
-    }
-  }
-  [aPool drain];
+      } // end of synchronized          
+    } // end of durtydurty
+    if(loopCounter > 50) [myPool drain];
+    sleep(sleepForValue);
+  } while (stop==NO);
 }
 
 #pragma mark CONSTANTS
+NSString * const RRFRegistryComponentsKey = @"components";
+NSString * const RRFRegistryComponentEndKey = @"end";
+NSString * const RRFRegistryComponentStartKey = @"start"; 
+NSString * const RRFRegistryHistoryKey = @"history";
+NSString * const RRFRegistryRunKey = @"runs";
 NSString * const RRFRegistryTemporaryPathKey = @"_TEMP/regfile.plist";
 
 @end

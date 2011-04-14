@@ -143,23 +143,21 @@ compObj,subject,sessionWindow;
 }
 
 - (BOOL)launchComponentWithID: (NSString *)componentID {
+
+  
   // grab current component ID
   if(currentComponentID) {
     [currentComponentID release];
   }
   currentComponentID = [[NSString alloc] initWithString:componentID];
+  
   // if componentID is equal to zero, we are signifying the end condition
   if([componentID isEqualToString:@"end"]) {
     [self tearDown];
-  } 
-  //add entry to component history
-  [[registry valueForKey:RRFSessionHistoryKey] addObject:currentComponentID];
-  // create a new run entry for current task
-  [[[self registryForTask:currentComponentID]
-    valueForKey:RRFSessionRunKey]
-   addObject:[NSMutableDictionary dictionaryWithCapacity:2]];
-  // update start in registry file
-  [self setValue:[NSDate date] forRunRegistryKey:@"start"];
+    return NO;
+  }
+  // initialize the component's run registry
+  [registry initializeRegistryForComponentRun:componentID];
   // attempt to get the corresponding definition
   NSDictionary *componentDefinition =
     [[components objectForKey:componentID] valueForKey:@"definition"];

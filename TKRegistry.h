@@ -84,7 +84,22 @@
  */
 - (id)valueForKey: (NSString *)key;
 
+/**
+ Get the value associated with the given key path.
+ @param NSString * keyPath The key path you wish to retrieve.
+ @return id Returns the value associated with the given key-path, or nil, if the key-path is not found.
+ */
+- (id)valueForKeyPath: (NSString *)keyPath;
+
 #pragma mark Setters
+/**
+ Initialize a new run registry for the given component ID if needed.
+ @param NSString * componentID The component ID for which to create a new run registry.
+ 
+ This method firsts checks if the component ID needs a new run registry. This will be the case if either the component's run registry is currently empty, or the most recent run registry contains a valid end key. If neither of these two conditions are satisfied, then we are attempting to recover the component, thus no new run registry should be created.
+ */
+- (void)initializeRegistryForComponentRun: (NSString *)componentID;
+
 /**
  Set a value at the top-level of the registry.
  @param id newValue The value you wish to store.
@@ -113,6 +128,11 @@
 - (BOOL)moveToPath: (NSString *)_fullPath;
 
 #pragma mark COSTANTS
+extern NSString * const RRFRegistryComponentsKey;
+extern NSString * const RRFRegistryComponentEndKey;
+extern NSString * const RRFRegistryComponentStartKey;
+extern NSString * const RRFRegistryHistoryKey;
+extern NSString * const RRFRegistryRunKey;
 extern NSString * const RRFRegistryTemporaryPathKey;
 
 @end
