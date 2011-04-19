@@ -20,15 +20,13 @@
 #define TK_REGISTRY_DEFAULT_TIMEOUT_INTERVAL 5000
 
 #pragma mark Housekeeping
-- (void)dealloc
-{
+- (void)dealloc {
   [data release];data=nil;
   [writePath release];writePath=nil;
   [super dealloc];
 }
 
-- (id)init
-{
+- (id)init {
   if(self=[super init])
   {
     [self setIsDirty:NO];
@@ -39,8 +37,7 @@
   return nil;
 }
 
-- (id)initWithContentsOfFile: (NSString *)_fullPathToFile
-{
+- (id)initWithContentsOfFile: (NSString *)_fullPathToFile {
   if(self=[self init])
   {
     data = [[NSMutableDictionary alloc] initWithContentsOfFile:_fullPathToFile];
@@ -53,8 +50,7 @@
   return nil;
 }
 
-- (id)initWithPath: (NSString *)_writePath
-{
+- (id)initWithPath: (NSString *)_writePath {
   if(self=[self init])
   {
     data = [[NSMutableDictionary alloc] init];
@@ -73,8 +69,7 @@
 }
 
 #pragma mark Accessors
-- (NSString *)fullPath
-{
+- (NSString *)fullPath {
   return [writePath copy];
 }
 
@@ -130,13 +125,11 @@
   return retValue;
 }
 
-+ (NSString *)temporaryPath
-{
++ (NSString *)temporaryPath {
   return [[[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:RRFRegistryTemporaryPathKey] stringByStandardizingPath];
 }
 
-- (id)valueForKey: (NSString *)key
-{
+- (id)valueForKey: (NSString *)key {
   if(key)
   {
     return [data valueForKey:key];
@@ -146,8 +139,7 @@
   return nil;
 }
 
-- (id)valueForKeyPath: (NSString *)keyPath
-{
+- (id)valueForKeyPath: (NSString *)keyPath {
   if(keyPath)
   {
     return [data valueForKeyPath:keyPath];
@@ -216,8 +208,7 @@
   }
 }
     
-- (void)setValue: (id)anObj forKey: (NSString *)aKey
-{
+- (void)setValue: (id)anObj forKey: (NSString *)aKey {
   @synchronized(data)
   {
     [data setValue:anObj forKey:aKey];
@@ -236,7 +227,7 @@
       // set value for our temp mutable dictionary
       [currentTask setValue:newValue forKey:key];
       // write our value back to data
-      [data setValue:currentTask forKey:keyPath];
+      [data setValue:currentTask forKeyPath:keyPath];
       // we're dirty now
       [self setIsDirty:YES];
     }
@@ -254,6 +245,7 @@
       // grab our key path
       NSString *keyPath = [NSString stringWithFormat:@"%@.%@.%@",RRFRegistryComponentsKey,[session currentComponentID],RRFRegistryRunKey];
       // get run stack
+      DLog(@"Getting run stack with key path: %@",keyPath);
       NSMutableArray *runStack = [NSMutableArray arrayWithArray:[data valueForKeyPath:keyPath]];
       DLog(@"This is the run stack I'm working with: %@",runStack);
       // get current run dictionary
@@ -262,6 +254,8 @@
       [currentRun setValue:newValue forKey:key];
       // put current run back in run stack
       [runStack replaceObjectAtIndex:[runStack count]-1 withObject:currentRun];
+      // put the run stack back in registry data
+      [data setValue:runStack forKeyPath:keyPath];
       // we're dirty now
       [self setIsDirty:YES];
     }
@@ -273,8 +267,7 @@
 }
 
 #pragma mark File Operations
-- (BOOL)moveToPath: (NSString *)_fullPath
-{
+- (BOOL)moveToPath: (NSString *)_fullPath {
   DLog(@"Attempting to copy registry file to: %@",_fullPath);
   BOOL result = YES;
   TKTime methodStart = current_time_marker();
@@ -305,8 +298,7 @@
 }
 
 #pragma mark Internal Methods
-- (void)bounceRegistryToDisk: (id)anArg
-{
+- (void)bounceRegistryToDisk: (id)anArg {
 
   NSAutoreleasePool *myPool = [[NSAutoreleasePool alloc] init];
   NSUInteger loopCounter = 0;

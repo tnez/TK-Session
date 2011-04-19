@@ -206,6 +206,7 @@ compObj,subject,sessionWindow;
   // load the regfile
   [registry release]; // release the old registry (if any)
   registry = [[TKRegistry alloc] initWithContentsOfFile:[TKRegistry temporaryPath]];
+  [registry setSession:self];
   // get the last object in history
   NSString *lastRunComponent = [[registry valueForKey:RRFSessionHistoryKey]
                                 lastObject];
