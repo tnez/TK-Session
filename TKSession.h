@@ -89,6 +89,13 @@
 */
 - (NSDictionary *)registryForTaskWithOffset: (NSInteger)offset;
 
+/**
+ Value for registry key path (this is nescesary for bundles to effectively share information through the registry)
+ @param NSString* aKeyPath The key path you wish to query, from the root of the registry file.
+ @return Returns the object associated with the given key path, or nil, if the key path given could not be located in the registry.
+ */
+- (id)valueForRegistryKeyPath: (NSString *)aKeyPath;
+
 #pragma mark Registry Setters
 /** 
  Sets a value for key pertaining to the whole current task (not to an 

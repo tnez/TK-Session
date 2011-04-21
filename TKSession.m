@@ -336,6 +336,10 @@ compObj,subject,sessionWindow;
   return [registry registryForTaskWithOffset:offset];
 }
 
+- (id)valueForRegistryKeyPath: (NSString *)aKeyPath {
+  return [registry valueForKeyPath:aKeyPath];
+}
+
 #pragma mark Registry Setters
 - (void)setValue: (id)newValue forRegistryKey: (NSString *)key {
   [registry setValue:newValue forRegistryKey:key];
