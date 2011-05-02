@@ -51,60 +51,158 @@
 @property(nonatomic, retain) TKSubject *subject;
 @property(assign) NSWindow *sessionWindow;
 
-- (void)componentDidBegin: (NSNotification *)info;
-- (void)componentDidFinish: (NSNotification *)info;
-- (void)componentWillBegin: (NSNotification *)info;
-- (id)initWithFile: (NSString *)filename;
 /**
- launchComponentWithID:
- Discussion - Attempts to launch the component whose ID value corresponds to the value of 
- componentID given. A componentID of zero constitutes the end of components.
- Return Value - Will return YES if component was identified and could begin,
- otherwise will return NO.
+   The component instance did begin.
+
+   This method is to be considered unreliable. If you need to know
+   when a component is to begin, use componentWillBegin, which will
+   always be sent before the component begins, while this method, may
+   return much later than expected due to issues with the way the
+   components run loop is handled.
+*/
+- (void)componentDidBegin: (NSNotification *)info;
+
+/**
+   The previously running component did finish.
+*/
+- (void)componentDidFinish: (NSNotification *)info;
+
+/**
+   The current component is about to begin.
+   
+   This should be used rather than componentDidBegin due to
+   reliability issues.
+*/
+- (void)componentWillBegin: (NSNotification *)info;
+
+/**
+   Initialize a session instance with the given session configuration
+   file.
+
+   @param filename The fullpath to the session configuration file to
+   be used for this session.
+
+   @return The session instance.
  */
+- (id)initWithFile: (NSString *)filename;
+
+/**
+   Attempt to launch a component with the given ID.
+
+   @param componentID The component ID as a string, as defined in the
+   session configuration file, which you wish to launch. The component
+   ID 'end' is a reserved value and signifies that the session is
+   complete and should be torn down.
+
+   @return YES if the component was successfully launched, otherwise
+   NO.
+*/
 - (BOOL)launchComponentWithID: (NSString *)componentID;
+
+/**
+   This is strange, but I don't think this is called anywhere. This is
+   a ghost-line, its like a ghost town. It was created somewhere in
+   the design process, and then deserted, leaving nothing but empty
+   saloons and blowing tumbleweeds. But I dare not delete, for the
+   Society for the Preservation of Extraneous Code, or S.P.E.C., is
+   surely not to be trifled with!
+ */
 - (BOOL)loadSessionFromFilePath: (NSString *)pathToFile;
+
+/**
+   Does the session pass its prefilight check?
+
+   @param errorString A pointer to a string which will hold the error
+   string upon return.
+   
+   @return YES if the session passes its preflight check. It is not
+   possible to detect run-time errors because the session is not
+   actually run. Only setup requirements can be checked.
+*/
 - (BOOL)passedPreflightCheck: (NSString **)errorString;
+
+/**
+   Attempt the recovery process.
+
+   @return YES if the recovery process was successful and we have
+   launched our first component.
+*/
 - (BOOL)recoverFromCrash;
+
+/**
+   Start the actual session, return YES upon success.
+ */
 - (BOOL)run;
+
+/**
+   The finalization process that should be done when the session has
+   finished.
+
+   Here files queued for move, if any (these are used with the
+   stand-alone Cocoa Apps), and temp files are cleaned up.
+ */
 - (void)tearDown;
 
 #pragma mark Registry Accessors
+
 /**
- Return copy of entire dictionary belonging to the task w/ the given ID
- Should return nil if ID is invalid
- */
+   Return registry corresponding to given task ID... returns nil if
+   not found.
+
+   @param taskID The ID of the target task as defined in the session
+   configuration file.
+*/
 - (NSDictionary *)registryForTask: (NSString *)taskID;
+
 /**
- Return copy of entire dictionary belonging to the last completed task
- Should return nil if last task cannot be found
- */
+   Return copy of entire dictionary belonging to the last completed task
+   Should return nil if last task cannot be found
+*/
 - (NSDictionary *)registryForLastTask;
+
 /**
- Return copy of entire dictionary belonging to the task referenced by the
- given offset. Should return nil if offset is invalid.
- Positive offsets are interpreted as from the first run task forward.
- Zero offset is the current task.
- Negative offsets are interpreted as the last run task backward.
+   Registry for the task using the given offset value.
+
+   @param offset How far offset is the target task from the current
+   task? -1 represents the last completed task, -n represents the task
+   completed n tasks-ago. 1 equals the first task, n represents nth
+   completed task starting at the beginning. 0 represents the current
+   task.
 */
 - (NSDictionary *)registryForTaskWithOffset: (NSInteger)offset;
 
 /**
- Value for registry key path (this is nescesary for bundles to effectively share information through the registry)
- @param NSString* aKeyPath The key path you wish to query, from the root of the registry file.
- @return Returns the object associated with the given key path, or nil, if the key path given could not be located in the registry.
- */
+   Value for registry key path (this is nescesary for bundles to
+   effectively share information through the registry)
+
+   @param aKeyPath The key path you wish to query, from the
+   root of the registry file.
+
+   @return The object associated with the given key path, or
+   nil, if the key path given could not be located in the registry.
+*/
 - (id)valueForRegistryKeyPath: (NSString *)aKeyPath;
 
 #pragma mark Registry Setters
-/** 
- Sets a value for key pertaining to the whole current task (not to an 
- individual run of said task).
- */
-- (void)setValue: (id)newValue forRegistryKey: (NSString *)key;
+
 /**
- Sets a value for key pertaining to the current run of the current task
- */
+   Set value for given global key for the current task
+
+   @param newValue The new value you wish to store.
+
+   @param key The key with which you would like to associate the new
+   value.
+*/
+- (void)setValue: (id)newValue forRegistryKey: (NSString *)key;
+
+/**
+   Set value for given key for current run of current task
+
+   @param newValue The new value you wish to store.
+
+   @param key The key with which you would like to associate the new
+   value.
+*/
 - (void)setValue: (id)newValue forRunRegistryKey: (NSString *)key;
 
 @end 
