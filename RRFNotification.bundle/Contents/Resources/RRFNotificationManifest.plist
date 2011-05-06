@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>TKComponentType</key>
+	<integer>0</integer>
+	<key>TKComponentName</key>
+	<string>Notification</string>
+	<key>TKComponentBundleName</key>
+	<string>RRFNotification</string>
+	<key>TKComponentBundleIdentifier</key>
+	<string>com.rrf.component.Notification</string>
+	<key>TKComponentOptions</key>
+	<array>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFNotificationTaskName</string>
+			<key>displayName</key>
+			<string>Task Name</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string>Notification</string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>The task name will be appended to the name of the data file</string>
+		</dict>
+		<dict>
+			<key>optionIdentifier</key>
+			<string>RRFNotificationDataDirectory</string>
+			<key>displayName</key>
+			<string>Data Directory</string>
+			<key>type</key>
+			<integer>3</integer>
+			<key>default</key>
+			<string></string>
+			<key>isDirectory</key>
+			<true/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>Directory where component will save data file - Initial value is set to session global</string>
+		</dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationBaseString</string>
+			<key>displayName</key>
+			<string>Base String</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<false/>
+			<key>help</key>
+			<string>The base string that will be used. For help with format tokens see http://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/Strings/Articles/formatSpecifiers.html#//apple_ref/doc/uid/TP40004265</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationArgumentList</string>
+			<key>displayName</key>
+			<string>Argument List</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>A comma-seperated list of registry key paths that you wish to substitute into the base string.</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldAllowSubjectClick</string>
+			<key>displayName</key>
+			<string>Should Allow Subject To Advance?</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the component will display a button which can be clicked to proceed.</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationSecretKeyCombo</string>
+			<key>displayName</key>
+			<string>Admin Key</string>
+			<key>type</key>
+			<integer>0</integer>
+			<key>default</key>
+			<string></string>
+			<key>allowsEdit</key>
+			<true/>
+			<key>allowsNull</key>
+			<true/>
+			<key>help</key>
+			<string>A key that will advance the notification screen for use when admin intervention should be forced.</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireAlt</string>
+			<key>displayName</key>
+			<string>Require 'ALT'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the alt key</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireCommand</string>
+			<key>displayName</key>
+			<string>Require 'Command'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the 'Command' key</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireControl</string>
+			<key>displayName</key>
+			<string>Require 'Control'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the 'Control' key</string>
+                </dict>
+                <dict>
+                        <key>optionIdentifier</key>
+			<string>RRFNotificationShouldRequireShift</string>
+			<key>displayName</key>
+			<string>Require 'Shift'</string>
+			<key>type</key>
+			<integer>2</integer>
+			<key>default</key>
+			<false/>
+			<key>allowsEdit</key>
+			<true/>
+			<key>help</key>
+			<string>If checked, the admin key combo will include the 'Shift' key</string>
+                </dict>
+        </array>
+</dict>
+</plist>
